@@ -1358,16 +1358,7 @@
     }
 
     // Border (siç e kishe)
-    if (_0x578b35 && _0x29160e > 0x1 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus) {
-      const _0x433719 = _0x578b35.multiboxID === _0x59894d.multiboxID;
-      _0x3c496a.lineWidth = this.size / 0x64 * 0xf;
-      _0x3c496a.strokeStyle = _0x433719 ? '#00B9E8' : "#FFFFFF";
-      const _0x486576 = this.size / 0x64 * 0x64 - _0x3c496a.lineWidth / 0x2;
-      _0x3c496a.beginPath();
-      _0x3c496a.arc(this.x, this.y, _0x486576, 0x2 * Math.PI, false);
-      _0x3c496a.closePath();
-      _0x3c496a.stroke();
-    }
+ 
 
     this.drawText(_0x3c496a);
   }
