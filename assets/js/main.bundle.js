@@ -1302,7 +1302,46 @@
         _0x253428.restore();
         this.drawCompleted = true;
       }
-    
+      ["drawCell"](_0x3c496a) {
+        const _0x29160e = _0xa630e8.totalPlaying();
+        const _0x59894d = _0xa630e8.getActiveClient();
+        const _0x578b35 = _0xa630e8.findClientOrigin(this.playerID, null);
+        if (!this.flags.isPellet) {
+          _0x3c496a.globalAlpha *= _0x2395ab.settings.cellTransparency;
+        }
+        _0x3c496a.fillStyle = this.color;
+        _0x3c496a.beginPath();
+        _0x3c496a.arc(this.x, this.y, this.size, 0x0, 0x2 * Math.PI, false);
+        _0x3c496a.fill();
+        if (this.isMarkedForRemoval) {
+          _0x3c496a.globalAlpha = this.alphaOnRemoval;
+        } else {
+          _0x3c496a.globalAlpha = this.globalAlpha;
+        }
+        if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
+          if (_0x578b35 && 'parent' === _0x578b35.clientType) {
+            if (_0x2395ab.playerInfo.customSkin1) {
+              this.skin = _0x2395ab.playerInfo.customSkin1;
+            }
+          } else if (_0x578b35 && "child" === _0x578b35.clientType) {
+            this.skin = _0x2395ab.playerInfo.customSkin2;
+          }
+          if (this.skin && _0x2395ab.settings.showSkins) {
+            this.drawSkin(_0x3c496a);
+          }
+          if (_0x578b35 && _0x29160e > 0x1 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus) {
+            const _0x433719 = _0x578b35.multiboxID === _0x59894d.multiboxID;
+            _0x3c496a.lineWidth = this.size / 0x64 * 0xf;
+            _0x3c496a.strokeStyle = _0x433719 ? '#00B9E8' : "#FFFFFF";
+            const _0x486576 = this.size / 0x64 * 0x64 - _0x3c496a.lineWidth / 0x2;
+            _0x3c496a.beginPath();
+            _0x3c496a.arc(this.x, this.y, _0x486576, 0x2 * Math.PI, false);
+            _0x3c496a.closePath();
+            _0x3c496a.stroke();
+          }
+          this.drawText(_0x3c496a);
+        }
+      }
       ["drawVirus"](_0x5cb68d) {
         if (!_0x584fcf.complete || 0x0 === _0x584fcf.naturalWidth) {
           return;
@@ -1310,104 +1349,6 @@
         const _0x21653d = this.size * _0x584fcf.width / 0x64;
         _0x5cb68d.drawImage(_0x584fcf, this.x - _0x21653d / 0x4, this.y - _0x21653d / 0x4, _0x21653d, _0x21653d);
       }
-     
-["drawCell"](_0x3c496a) {
-  const _0x29160e = _0xa630e8.totalPlaying();
-  const _0x59894d = _0xa630e8.getActiveClient();
-  const _0x578b35 = _0xa630e8.findClientOrigin(this.playerID, null);
-
-  if (!this.flags.isPellet) {
-    _0x3c496a.globalAlpha *= _0x2395ab.settings.cellTransparency;
-  }
-
-  // ✅ CHANGE #1 (vetem ky vend): always white for your cells
-  const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
-  _0x3c496a.fillStyle = _0xisMine ? "#FFFFFF" : this.color;
-
-  _0x3c496a.beginPath();
-  _0x3c496a.arc(this.x, this.y, this.size, 0x0, 0x2 * Math.PI, false);
-  _0x3c496a.fill();
-
-  if (this.isMarkedForRemoval) {
-    _0x3c496a.globalAlpha = this.alphaOnRemoval;
-  } else {
-    _0x3c496a.globalAlpha = this.globalAlpha;
-  }
-
-  if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
-    if (_0x578b35 && 'parent' === _0x578b35.clientType) {
-      if (_0x2395ab.playerInfo.customSkin1) {
-        this.skin = _0x2395ab.playerInfo.customSkin1;
-      }
-    } else if (_0x578b35 && "child" === _0x578b35.clientType) {
-      this.skin = _0x2395ab.playerInfo.customSkin2;
-    }
-
-    if (this.skin && _0x2395ab.settings.showSkins) {
-      this.drawSkin(_0x3c496a);
-    }
-
-    // ✅ CHANGE #2: border i hequr komplet (blloku i vjeter u fshi)
-
-    this.drawText(_0x3c496a);
-  }
-}
-
-
-// ngjyrat (default: active white, inactive blue)
-const _0xfillActive = (_0xtheme.cellFillActiveColor || "#FFFFFF");
-const _0xfillB = (_0xtheme.cellFillOtherColor || "#1E90FF");
-
-// a eshte qeliza jote (parent/child)
-const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
-
-// Active = true edhe kur je vetem / activeClient mungon
-const _0xisActive =
-  _0xisMine && (
-    (_0x29160e <= 0x1) ||                 // kur je vetem
-    !_0x59894d ||                         // kur activeClient nuk ekziston
-    (_0x578b35.multiboxID === _0x59894d.multiboxID) // normalisht
-  );
-
-// vendos fill color
-_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillB) : this.color;
-// ==============================================================
-
-            
-
-
-  // ==================================================
-
-  _0x3c496a.beginPath();
-  _0x3c496a.arc(this.x, this.y, this.size, 0x0, 0x2 * Math.PI, false);
-  _0x3c496a.fill();
-
-  if (this.isMarkedForRemoval) {
-    _0x3c496a.globalAlpha = this.alphaOnRemoval;
-  } else {
-    _0x3c496a.globalAlpha = this.globalAlpha;
-  }
-
-  if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
-    if (_0x578b35 && 'parent' === _0x578b35.clientType) {
-      if (_0x2395ab.playerInfo.customSkin1) {
-        this.skin = _0x2395ab.playerInfo.customSkin1;
-      }
-    } else if (_0x578b35 && "child" === _0x578b35.clientType) {
-      this.skin = _0x2395ab.playerInfo.customSkin2;
-    }
-
-    if (this.skin && _0x2395ab.settings.showSkins) {
-      this.drawSkin(_0x3c496a);
-    }
-
-    // Border (siç e kishe)
- 
-
-    this.drawText(_0x3c496a);
-  }
-}
-
       ["drawSkin"](_0x3e8565) {
         _0x3e8565.globalAlpha *= _0x2395ab.settings.cellTransparency;
         const _0x37a009 = 0x2 * this.size * 1.002;
