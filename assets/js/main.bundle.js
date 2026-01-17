@@ -512,12 +512,14 @@
         this.canvas = null;
         this.ctx = null;
         this.graphicsQualityFactor = 0x1;
-        this.camera = {
-          'x': 0x0,
-          'y': 0x0,
-          'viewScale': 0x1,
-          'zoom': 0.55
-        };
+     this.camera = {
+  'x': 0x0,
+  'y': 0x0,
+  'viewScale': 0x1,
+  'zoom': 0.9,
+  'userZoom': 1.0
+};
+
         this.mouse = {
           'worldX': 0x0,
           'worldY': 0x0,
