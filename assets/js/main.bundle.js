@@ -512,14 +512,14 @@
         this.canvas = null;
         this.ctx = null;
         this.graphicsQualityFactor = 0x1;
-     this.camera = {
-  'x': 0x0,
-  'y': 0x0,
-  'viewScale': 0x1,
-  'zoom': 0.9,
-  'userZoom': 1.0
-};
-
+        this.camera = {
+          'x': 0x0,
+          'y': 0x0,
+          'viewScale': 0x1,
+          'zoomBase': 0.9,
+          'userZoom': 1.0,
+          'zoom': 0.9
+        };
         this.mouse = {
           'worldX': 0x0,
           'worldY': 0x0,
@@ -560,8 +560,9 @@
       }
       ["setZoom"](_0x3c8a35) {
         const _0x3c333e = (_0x3c8a35.wheelDelta ? _0x3c8a35.wheelDelta / 0x78 : -_0x3c8a35.detail / 0x3) || 0x0;
-        let _0x33dc39 = this.camera.zoom * 1.1 ** _0x3c333e;
-        this.camera.zoom = Math.max(0.0014, Math.min(_0x33dc39, 0x2));
+        let _z = (this.camera.userZoom || 1.0) * (1.1 ** _0x3c333e);
+        this.camera.userZoom = Math.max(0.25, Math.min(_z, 2.5));
+        this.camera.zoom = (this.camera.zoomBase || 0.9) * this.camera.userZoom;
       }
       ['updateZoom']() {
         const _0x2c8d1b = Math.max(this.canvas.width / 0x780, this.canvas.height / 0x438) * this.camera.zoom;
@@ -589,22 +590,15 @@
         const _0x283cb3 = _0xa630e8.getActiveClient();
         const _0x5a780c = _0xa630e8.getClients();
         const _0x25e370 = _0xa630e8.totalPlaying();
-        let _0x17ce57 = 0x0;
-        let _0x4badaa = 0x0;
         _0x5a780c.forEach(_0x4ceb20 => {
           _0x4ceb20.calculatePlayerPositionAndMass();
-          if (_0x4ceb20.stores.ownedCells.length) {
-            _0x17ce57 += _0x4ceb20.playerPoint.x / _0x25e370;
-            _0x4badaa += _0x4ceb20.playerPoint.y / _0x25e370;
-          }
         });
-        if (_0x25e370 > 0x0) {
-          this.camera.x = (this.camera.x + _0x17ce57) / 0x2;
-          this.camera.y = (this.camera.y + _0x4badaa) / 0x2;
-        }
-        if (_0x283cb3 && 0x0 === _0x25e370) {
-          this.camera.x = (0x1d * this.camera.x + _0x283cb3.spectatePoint.x) / 0x1e;
-          this.camera.y = (0x1d * this.camera.y + _0x283cb3.spectatePoint.y) / 0x1e;
+        if (_0x283cb3 && _0x283cb3.playing && _0x283cb3.stores.ownedCells.length) {
+          const tx = _0x283cb3.playerPoint.x;
+          const ty = _0x283cb3.playerPoint.y;
+          this.camera.x = this.camera.x * 0.65 + tx * 0.35;
+          this.camera.y = this.camera.y * 0.65 + ty * 0.35;
+          return;
         }
       }
       ['clearCanvas']() {
@@ -1326,7 +1320,7 @@ const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && 
 const _0xisActive = (_0xisMine && _0x59894d && _0x578b35 && (_0x578b35.multiboxID === _0x59894d.multiboxID));
 
 // ngjyrat nga theme (fallback ne te bardhe)
-const _0xfillA = _0xtheme.cellFillActiveColor || "#d9d9d9";
+const _0xfillA = _0xtheme.cellFillActiveColor || "#FFFFFF";
 const _0xfillB = _0xtheme.cellFillOtherColor  || "#0033cc";
 
 // vendos fill color
