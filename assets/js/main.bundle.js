@@ -1326,7 +1326,7 @@ const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && 
 const _0xisActive = (_0xisMine && _0x59894d && _0x578b35 && (_0x578b35.multiboxID === _0x59894d.multiboxID));
 
 // ngjyrat nga theme (fallback ne te bardhe)
-const _0xfillA = _0xtheme.cellFillActiveColor || "#FFFFFF";
+const _0xfillA = _0xtheme.cellFillActiveColor || "#d9d9d9";
 const _0xfillB = _0xtheme.cellFillOtherColor  || "#0033cc";
 
 // vendos fill color
