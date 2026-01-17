@@ -1332,7 +1332,14 @@
  const _0xfillB = _0xtheme.cellFillOtherColor  || "#1E90FF";
 
 const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
+const _0xisActive =
+  _0xisMine && (
+    (_0x29160e <= 0x1) ||           // kur je vetem
+    !_0x59894d ||                   // kur activeClient nuk ekziston
+    (_0x578b35.multiboxID === _0x59894d.multiboxID) // normalisht
+  );
 _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillB) : this.color;
+
 
             
 
