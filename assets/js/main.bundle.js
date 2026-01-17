@@ -1320,21 +1320,25 @@
   }
 
   // ===== THEME FILL COLORS (ACTIVE WHITE / INACTIVE BLUE) =====
-  let _0xtheme = {};
-  try { _0xtheme = JSON.parse(localStorage.getItem("ogarx:theme")) || {}; } catch (e) {}
+// ===== THEME FILL COLORS (SAFE) =====
+let _0xtheme = {};
+try { _0xtheme = JSON.parse(localStorage.getItem("ogarx:theme")) || {}; } catch (e) {}
 
-  const _0xfillActive = (_0xtheme.cellFillActiveColor || "#FFFFFF");
-  const _0xfillOther  = (_0xtheme.cellFillOtherColor  || "#1E90FF");
+const _0xfillActive = (_0xtheme.cellFillActiveColor || "#FFFFFF");
+const _0xfillOther  = (_0xtheme.cellFillOtherColor  || "#1E90FF");
 
-  const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
+const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
 
-  // Active = true edhe kur je vetem ose kur activeClient mungon
-  const _0xisActive =
-    _0xisMine && (
-      (_0x29160e <= 0x1) ||
-      !_0x59894d ||
-      (_0x578b35.multiboxID === _0x59894d.multiboxID)
-    );
+const _0xisActive =
+  _0xisMine && (
+    (_0x29160e <= 0x1) ||
+    !_0x59894d ||
+    (_0x578b35.multiboxID === _0x59894d.multiboxID)
+  );
+
+_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillOther) : this.color;
+// ===================================
+
 
   _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillOther) : this.color;
   // ============================================================
