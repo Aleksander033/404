@@ -1330,8 +1330,9 @@
 
   const _0xfillActive = (_0xtheme.cellFillActiveColor || "#FFFFFF");
   const _0xfillOther  = (_0xtheme.cellFillOtherColor  || "#1E90FF");
+const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
+_0x3c496a.fillStyle = _0xisMine ? "#FFFFFF" : this.color;
 
-  _0x3c496a.fillStyle = _0xisMultiboxCell ? (_0xisActive ? _0xfillActive : _0xfillOther) : this.color;
   // ==================================================
 
   _0x3c496a.beginPath();
