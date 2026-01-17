@@ -1331,15 +1331,30 @@
   const _0xfillActive = (_0xtheme.cellFillActiveColor || "#FFFFFF");
  const _0xfillB = _0xtheme.cellFillOtherColor  || "#1E90FF";
 
+// ===== THEME (localStorage) + multibox fill colors (FIXED) =====
+const _0xtheme = (() => {
+  try { return JSON.parse(localStorage.getItem("ogarx:theme")) || {}; }
+  catch (e) { return {}; }
+})();
+
+// ngjyrat (default: active white, inactive blue)
+const _0xfillActive = (_0xtheme.cellFillActiveColor || "#FFFFFF");
+const _0xfillB = (_0xtheme.cellFillOtherColor || "#1E90FF");
+
+// a eshte qeliza jote (parent/child)
 const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
+
+// Active = true edhe kur je vetem / activeClient mungon
 const _0xisActive =
   _0xisMine && (
-    (_0x29160e <= 0x1) ||           // kur je vetem
-    !_0x59894d ||                   // kur activeClient nuk ekziston
+    (_0x29160e <= 0x1) ||                 // kur je vetem
+    !_0x59894d ||                         // kur activeClient nuk ekziston
     (_0x578b35.multiboxID === _0x59894d.multiboxID) // normalisht
   );
-_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillB) : this.color;
 
+// vendos fill color
+_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillB) : this.color;
+// ==============================================================
 
             
 
