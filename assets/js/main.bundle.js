@@ -1325,7 +1325,7 @@ const _0xisActive = (_0xisMine && _0x59894d && _0x578b35 && (_0x578b35.multiboxI
 
 // ngjyrat nga theme (fallback ne te bardhe)
 const _0xfillA = _0xtheme.cellFillActiveColor || "#FFFFFF";
-const _0xfillB = _0xtheme.cellFillOtherColor  || "#1E90FF";
+const _0xfillB = _0xtheme.cellFillOtherColor  || "#000080";
 
 // vendos fill color
 _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.color;
