@@ -1312,8 +1312,25 @@
   }
 
   // ✅ CHANGE #1 (vetem ky vend): always white for your cells
-  const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
-  _0x3c496a.fillStyle = _0xisMine ? "#FFFFFF" : this.color;
+ // ===== THEME (localStorage) + multibox fill colors =====
+const _0xtheme = (() => {
+  try { return JSON.parse(localStorage.getItem("ogarx:theme")) || {}; }
+  catch (e) { return {}; }
+})();
+
+const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
+
+// active/inactive vetem nese eshte multibox (ka active client)
+const _0xisActive = (_0xisMine && _0x59894d && _0x578b35 && (_0x578b35.multiboxID === _0x59894d.multiboxID));
+
+// ngjyrat nga theme (fallback ne te bardhe)
+const _0xfillA = _0xtheme.cellFillActiveColor || "#FFFFFF";
+const _0xfillB = _0xtheme.cellFillOtherColor  || "#1E90FF";
+
+// vendos fill color
+_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.color;
+// ======================================================
+
 
   _0x3c496a.beginPath();
   _0x3c496a.arc(this.x, this.y, this.size, 0x0, 0x2 * Math.PI, false);
