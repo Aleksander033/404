@@ -2168,63 +2168,7 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
           this.settingsVisible = true;
         });
       }
-      ['initPlayerInputs']() {
-        const _0x3a6a1c = document.getElementById("nickname");
-        const _0xdfd103 = document.getElementById("tag");
-        const _0x27ae72 = document.getElementById('play');
-        const _0x4f2956 = document.getElementById("spectate");
-        const _0x12e68b = document.getElementById("menu-display");
-        const _0xeeb4e0 = document.getElementById("servers");
-        const _0x4efb40 = document.getElementById('restart');
-        this.playerInfo.nickname = _0x3a6a1c.value = localStorage.getItem("𝐙𝐲𝐧𝐗:nickname") || '';
-        this.playerInfo.tag = _0xdfd103.value = localStorage.getItem("𝐙𝐲𝐧𝐗:tag") || '';
-        const _0x12d85a = localStorage.getItem("𝐙𝐲𝐧𝐗:server") || _0xeeb4e0.options[0x0].value;
-        _0xeeb4e0.value = _0x12d85a;
-        this.serverUrl = _0x12d85a;
-        this.initClient("parent", this.serverUrl);
-        _0x3a6a1c.addEventListener("input", () => {
-          this.playerInfo.nickname = _0x3a6a1c.value;
-          if (_0xa630e8.clients.length) {
-            _0xa630e8.clients.forEach(_0x50c1d7 => {
-              _0x50c1d7.sendPlayerInfo({
-                'nickname': this.playerInfo.nickname
-              });
-            });
-          }
-          localStorage.setItem('𝐙𝐲𝐧𝐗:nickname', _0x3a6a1c.value);
-        });
-        _0xdfd103.addEventListener("input", () => {
-          this.playerInfo.tag = _0xdfd103.value;
-          _0xa630e8.clients.forEach(_0x5a4fcc => {
-            _0x5a4fcc.sendPlayerInfo({
-              'tag': this.playerInfo.tag
-            });
-          });
-          localStorage.setItem("𝐙𝐲𝐧𝐗:tag", _0xdfd103.value);
-        });
-        _0xeeb4e0.addEventListener("change", () => {
-          const _0x485497 = _0xeeb4e0.value;
-          localStorage.setItem("𝐙𝐲𝐧𝐗:server", _0x485497);
-          this.serverUrl = _0x485497;
-          if (_0xa630e8.clients.length) {
-            _0xa630e8.clients.forEach(_0x48a2cd => {
-              _0x48a2cd.close();
-              _0x48a2cd.on("close", () => this.initClient("parent", this.serverUrl));
-            });
-          } else {
-            this.initClient("parent", this.serverUrl);
-          }
-        });
-        _0x4efb40.addEventListener("click", () => {
-          if (_0xa630e8.clients.length) {
-            _0xa630e8.clients.forEach(_0x5c0f0a => {
-              _0x5c0f0a.close();
-              _0x5c0f0a.on('close', () => this.initClient("parent", this.serverUrl));
-            });
-          } else {
-            this.initClient("parent", this.serverUrl);
-          }
-        });
+      ['initPlayerInputs']() { const _0x3a6a1c = document.getElementById("nickname"); const _0xdfd103 = document.getElementById("tag"); const _0x27ae72 = document.getElementById('play'); const _0x4f2956 = document.getElementById("spectate"); const _0x12e68b = document.getElementById("menu-display"); const _0xeeb4e0 = document.getElementById("servers"); const _0x4efb40 = document.getElementById('restart'); this.playerInfo.nickname = _0x3a6a1c.value = localStorage.getItem("𝐙𝐲𝐧𝐗:nickname") || ''; this.playerInfo.tag = _0xdfd103.value = localStorage.getItem("𝐙𝐲𝐧𝐗:tag") || ''; const _0x12d85a = localStorage.getItem("𝐙𝐲𝐧𝐗:server") || _0xeeb4e0.options[0x0].value; _0xeeb4e0.value = _0x12d85a; this.serverUrl = _0x12d85a; this.initClient("parent", this.serverUrl); _0x3a6a1c.addEventListener("input", () => { this.playerInfo.nickname = _0x3a6a1c.value; if (_0xa630e8.clients.length) { _0xa630e8.clients.forEach(_0x50c1d7 => { _0x50c1d7.sendPlayerInfo({ 'nickname': this.playerInfo.nickname }); }); } localStorage.setItem('𝐙𝐲𝐧𝐗:nickname', _0x3a6a1c.value); }); _0xdfd103.addEventListener("input", () => { this.playerInfo.tag = _0xdfd103.value; _0xa630e8.clients.forEach(_0x5a4fcc => { _0x5a4fcc.sendPlayerInfo({ 'tag': this.playerInfo.tag }); }); localStorage.setItem("𝐙𝐲𝐧𝐗:tag", _0xdfd103.value); }); _0xeeb4e0.addEventListener("change", () => { const _0x485497 = _0xeeb4e0.value; localStorage.setItem("𝐙𝐲𝐧𝐗:server", _0x485497); this.serverUrl = _0x485497; if (_0xa630e8.clients.length) { _0xa630e8.clients.forEach(_0x48a2cd => { _0x48a2cd.close(); _0x48a2cd.on("close", () => this.initClient("parent", this.serverUrl)); }); } else { this.initClient("parent", this.serverUrl); } });
         _0x27ae72.addEventListener("click", () => {
           const _0x5e571f = _0xa630e8.getActiveClient();
           if (_0x5e571f) {
