@@ -2168,53 +2168,100 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
           this.settingsVisible = true;
         });
       }
-      ['initPlayerInputs']() {
-        const _0x3a6a1c = document.getElementById("nickname");
-        const _0xdfd103 = document.getElementById("tag");
-        const _0x27ae72 = document.getElementById('play');
-        const _0x4f2956 = document.getElementById("spectate");
-        const _0x12e68b = document.getElementById("menu-display");
-        const _0xeeb4e0 = document.getElementById("servers");
-        const _0x4efb40 = document.getElementById('restart');
-        this.playerInfo.nickname = _0x3a6a1c.value = localStorage.getItem("𝐙𝐲𝐧𝐗:nickname") || '';
-        this.playerInfo.tag = _0xdfd103.value = localStorage.getItem("𝐙𝐲𝐧𝐗:tag") || '';
-        const _0x12d85a = localStorage.getItem("𝐙𝐲𝐧𝐗:server") || _0xeeb4e0.options[0x0].value;
-        _0xeeb4e0.value = _0x12d85a;
-        this.serverUrl = _0x12d85a;
-        this.initClient("parent", this.serverUrl);
-        _0x3a6a1c.addEventListener("input", () => {
-          this.playerInfo.nickname = _0x3a6a1c.value;
-          if (_0xa630e8.clients.length) {
-            _0xa630e8.clients.forEach(_0x50c1d7 => {
-              _0x50c1d7.sendPlayerInfo({
-                'nickname': this.playerInfo.nickname
-              });
-            });
-          }
-          localStorage.setItem('𝐙𝐲𝐧𝐗:nickname', _0x3a6a1c.value);
-        });
-        _0xdfd103.addEventListener("input", () => {
-          this.playerInfo.tag = _0xdfd103.value;
-          _0xa630e8.clients.forEach(_0x5a4fcc => {
-            _0x5a4fcc.sendPlayerInfo({
-              'tag': this.playerInfo.tag
-            });
-          });
-          localStorage.setItem("𝐙𝐲𝐧𝐗:tag", _0xdfd103.value);
-        });
-        _0xeeb4e0.addEventListener("change", () => {
-          const _0x485497 = _0xeeb4e0.value;
-          localStorage.setItem("𝐙𝐲𝐧𝐗:server", _0x485497);
-          this.serverUrl = _0x485497;
-          if (_0xa630e8.clients.length) {
-            _0xa630e8.clients.forEach(_0x48a2cd => {
-              _0x48a2cd.close();
-              _0x48a2cd.on("close", () => this.initClient("parent", this.serverUrl));
-            });
-          } else {
-            this.initClient("parent", this.serverUrl);
-          }
-        });
+['initPlayerInputs']() {
+  const _nickP = document.getElementById("nickname-parent");
+  const _nickC = document.getElementById("nickname-child");
+  const _tagEl = document.getElementById("tag");
+  const _play = document.getElementById('play');
+  const _spectate = document.getElementById("spectate");
+  const _menu = document.getElementById("menu-display");
+  const _servers = document.getElementById("servers");
+  const _restart = document.getElementById('restart');
+
+  // Backward compatibility: nese ekziston nickname i vjeter, perdore si parent
+  const _oldNick = localStorage.getItem("𝐙𝐲𝐧𝐗:nickname") || "";
+
+  const _lp = localStorage.getItem("𝐙𝐲𝐧𝐗:nicknameParent") || _oldNick || "";
+  const _lc = localStorage.getItem("𝐙𝐲𝐧𝐗:nicknameChild") || "";
+
+  // ruaj edhe ne playerInfo
+  this.playerInfo.nicknameParent = (_nickP ? (_nickP.value = _lp) : _lp);
+  this.playerInfo.nicknameChild  = (_nickC ? (_nickC.value = _lc) : _lc);
+
+  this.playerInfo.tag = _tagEl.value = localStorage.getItem("𝐙𝐲𝐧𝐗:tag") || '';
+
+  const _sv = localStorage.getItem("𝐙𝐲𝐧𝐗:server") || _servers.options[0x0].value;
+  _servers.value = _sv;
+  this.serverUrl = _sv;
+
+  // init parent gjithmone
+  this.initClient("parent", this.serverUrl);
+
+  // helper: dergo nickname per secilin client sipas clientType
+  const _sendNicknames = () => {
+    if (!_0xa630e8.clients.length) return;
+
+    _0xa630e8.clients.forEach(_c => {
+      const _type = _c.clientType || _c.type || _c.role; // zakonisht eshte clientType
+      const _nick = (_type === "child")
+        ? (this.playerInfo.nicknameChild || this.playerInfo.nicknameParent || "")
+        : (this.playerInfo.nicknameParent || "");
+
+      _c.sendPlayerInfo({ 'nickname': _nick });
+    });
+  };
+
+  // Parent nickname input
+  if (_nickP) {
+    _nickP.addEventListener("input", () => {
+      this.playerInfo.nicknameParent = _nickP.value;
+      localStorage.setItem("𝐙𝐲𝐧𝐗:nicknameParent", _nickP.value);
+
+      // optional: mbaj edhe key-n e vjeter qe mos prishet dicka tjeter
+      localStorage.setItem("𝐙𝐲𝐧𝐗:nickname", _nickP.value);
+
+      _sendNicknames();
+    });
+  }
+
+  // Child nickname input
+  if (_nickC) {
+    _nickC.addEventListener("input", () => {
+      this.playerInfo.nicknameChild = _nickC.value;
+      localStorage.setItem("𝐙𝐲𝐧𝐗:nicknameChild", _nickC.value);
+      _sendNicknames();
+    });
+  }
+
+  // Tag input (siç e kishe)
+  _tagEl.addEventListener("input", () => {
+    this.playerInfo.tag = _tagEl.value;
+    _0xa630e8.clients.forEach(_c => {
+      _c.sendPlayerInfo({ 'tag': this.playerInfo.tag });
+    });
+    localStorage.setItem("𝐙𝐲𝐧𝐗:tag", _tagEl.value);
+  });
+
+  // Server change (siç e kishe)
+  _servers.addEventListener("change", () => {
+    const _url = _servers.value;
+    localStorage.setItem("𝐙𝐲𝐧𝐗:server", _url);
+    this.serverUrl = _url;
+
+    if (_0xa630e8.clients.length) {
+      _0xa630e8.clients.forEach(_c => {
+        _c.close();
+        _c.on("close", () => this.initClient("parent", this.serverUrl));
+      });
+    } else {
+      this.initClient("parent", this.serverUrl);
+    }
+  });
+
+  // sapo te kete clients, coji emrat (siguri)
+  _sendNicknames();
+}
+
         _0x4efb40.addEventListener("click", () => {
           if (_0xa630e8.clients.length) {
             _0xa630e8.clients.forEach(_0x5c0f0a => {
