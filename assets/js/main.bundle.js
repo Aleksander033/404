@@ -1332,7 +1332,8 @@
  const _0xfillB = _0xtheme.cellFillOtherColor  || "#1E90FF";
 
 const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
-_0x3c496a.fillStyle = _0xisMine ? "#FFFFFF" : this.color;
+_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillActive : _0xfillB) : this.color;
+
             
 
 
