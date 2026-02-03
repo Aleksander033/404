@@ -3,23 +3,40 @@ console.log("BACKGROUND PATCH LOADED");
 (() => {
 
 function applyBg(val){
-  const canvas = document.getElementById("game-display");
-  const menu = document.getElementById("menu-display");
+  const targets = [
+    document.getElementById("menu-display"),
+    document.getElementById("settings-display"),
+    document.getElementById("gallery-display"),
+  ].filter(Boolean);
 
-  if(!canvas) return;
+  if (targets.length === 0) return;
 
   if(!val){
-    canvas.style.background = "";
-    if(menu) menu.style.backgroundImage = "";
+    targets.forEach(el => {
+      el.style.backgroundImage = "";
+      // rikthe overlay default (nëse do)
+      if (el.id === "menu-display") el.style.backgroundColor = "rgba(0,0,0,0.3)";
+      if (el.id !== "menu-display") el.style.backgroundColor = "rgba(0,0,0,0.5)";
+    });
     return;
   }
 
+  // Gradient
   if(val.startsWith("linear-gradient") || val.startsWith("radial-gradient")){
-    canvas.style.background = val;
-  } else {
-    canvas.style.background = `url("${val}") center / cover no-repeat`;
+    targets.forEach(el => {
+      el.style.backgroundImage = "";
+      el.style.background = val; // gradient si background direkt
+    });
+    return;
   }
+
+  // Image URL
+  targets.forEach(el => {
+    el.style.background = ""; // pastro gradient nëse kishte
+    el.style.backgroundImage = `url("${val}")`;
+  });
 }
+
 
 
   document.addEventListener("DOMContentLoaded", () => {
