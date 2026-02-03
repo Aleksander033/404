@@ -431,5 +431,40 @@
   }
 
 
+/* ===== Color picker (multibox cell fill) ===== */
+#settings input[type="color"]{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 44px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
 
+#settings input[type="color"]:hover{
+  transform: translateY(-1px);
+  border-color: rgba(85,214,255,0.35);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.45);
+}
+
+/* Chrome/Safari */
+#settings input[type="color"]::-webkit-color-swatch-wrapper{
+  padding: 0;
+  border-radius: 10px;
+}
+#settings input[type="color"]::-webkit-color-swatch{
+  border: none;
+  border-radius: 9px;
+}
+
+/* Firefox */
+#settings input[type="color"]::-moz-color-swatch{
+  border: none;
+  border-radius: 9px;
+}
   
