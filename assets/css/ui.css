@@ -205,4 +205,13 @@ body.custom-bg{
   background-position: center;
   background-repeat: no-repeat;
 }
+/* Custom background for overlays */
+#menu-display,
+#settings-display,
+#gallery-display{
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
 
