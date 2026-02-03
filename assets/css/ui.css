@@ -192,11 +192,11 @@
   filter: drop-shadow(0 10px 25px rgba(0,0,0,.55));
   margin-top: 6px;
 } 
-img.logo{
-  width:110px !important;
-  height:110px !important;
-  object-fit:contain;
-  display:block;
-  margin: 0 auto 6px auto;
-  filter: drop-shadow(0 10px 25px rgba(0,0,0,.6));
+.brand-logo{
+  font-size:32px;
+  font-weight:800;
+  letter-spacing:2px;
+  color:white;
+  text-shadow:0 0 15px rgba(120,200,255,.6);
+  margin-bottom:6px;
 }
