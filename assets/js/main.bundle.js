@@ -836,10 +836,50 @@
 
     // (FPS tracker removed)
 
-    // Dark background
+    // Dark background + custom in-game background (ZYNX_BG)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    // ZYNX_BG supports:
+    // - image URL (drawn into canvas)
+    // - linear-gradient(...) / radial-gradient(...) (uses first 2 hex colors if present)
+    const __bgVal = (localStorage.getItem("ZYNX_BG") || "").trim();
+
+    if (!window.__ZYNX_BG_CACHE__) {
+      window.__ZYNX_BG_CACHE__ = { src: null, img: null, ok: false };
+    }
+
+    if (__bgVal) {
+      if (__bgVal.startsWith("linear-gradient") || __bgVal.startsWith("radial-gradient")) {
+        const __cols = __bgVal.match(/#(?:[0-9a-fA-F]{3}){1,2}/g) || [];
+        const __c1 = __cols[0] || "#0f0f0f";
+        const __c2 = __cols[1] || "#1a2a4a";
+        const __g = ctx.createLinearGradient(0, 0, ctx.canvas.width, ctx.canvas.height);
+        __g.addColorStop(0, __c1);
+        __g.addColorStop(1, __c2);
+        ctx.fillStyle = __g;
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      } else {
+        const __cache = window.__ZYNX_BG_CACHE__;
+        if (__cache.src !== __bgVal) {
+          __cache.src = __bgVal;
+          __cache.ok = false;
+          __cache.img = new Image();
+          __cache.img.crossOrigin = "anonymous";
+          __cache.img.onload = () => { __cache.ok = true; };
+          __cache.img.onerror = () => { __cache.ok = false; };
+          __cache.img.src = __bgVal;
+        }
+        if (__cache.ok && __cache.img && __cache.img.complete && __cache.img.naturalWidth > 0) {
+          ctx.drawImage(__cache.img, 0, 0, ctx.canvas.width, ctx.canvas.height);
+        } else {
+          ctx.fillStyle = "#000";
+          ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        }
+      }
+    } else {
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
 
     // Prepare frames
     _0xa630e8.clients.forEach((client, index) => {
@@ -2517,4 +2557,5 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
       window.textCache = _0x337cc2;
     });
   })();
+
 
