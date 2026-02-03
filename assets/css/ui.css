@@ -200,3 +200,9 @@
   text-shadow:0 0 15px rgba(120,200,255,.6);
   margin-bottom:6px;
 }
+body.custom-bg{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
