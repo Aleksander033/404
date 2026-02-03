@@ -1,40 +1,64 @@
-/* ============================= */
-/* Gallery Overlay Container     */
-/* ============================= */
-#gallery-display {
-    display: none;                     /* Hidden by default */
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    transition: opacity 0.3s ease;      /* Smooth fade-in/out */
+#gallery-display{
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
 }
 
-/* Visibility States */
-#gallery-display.visible {
-    display: block;
+#gallery-display.visible{ display: block; }
+#gallery-display.hidden{ display: none; }
+
+#gallery-display-center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
 }
 
-#gallery-display.hidden {
-    display: none;
+#gallery{
+  width: min(820px, calc(100vw - 24px));
+  height: min(520px, calc(100vh - 24px));
+  position: relative;
+
+  color: rgba(255,255,255,0.9);
+  background: rgba(15, 18, 30, 0.82);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  box-shadow: 0 22px 70px rgba(0,0,0,0.55);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
 }
 
-/* ============================= */
-/* Gallery Center Container       */
-/* ============================= */
-#gallery-display-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 2;
-    transform: translate(-50%, -50%);
-    transform-origin: center;
-    transition: transform 0.3s ease-in-out; /* Smooth scaling/animation */
+/* Support both ids, in case HTML uses settings-close-btn */
+#gallery-close-btn,
+#gallery #settings-close-btn{
+  width: 34px;
+  height: 34px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  color: #fff;
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: transform .15s ease, border-color .15s ease;
 }
 
+#gallery-close-btn:hover,
+#gallery #settings-close-btn:hover{
+  transform: scale(1.05);
+  border-color: rgba(85,214,255,0.35);
+}
 /* ============================= */
 /* Gallery Box                   */
 /* ============================= */
