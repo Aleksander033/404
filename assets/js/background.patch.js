@@ -1,3 +1,5 @@
+console.log("BACKGROUND PATCH LOADED");
+
 (() => {
   function applyBg(url){
     if(!url){
