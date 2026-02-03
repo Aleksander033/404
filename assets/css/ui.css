@@ -192,10 +192,11 @@
   filter: drop-shadow(0 10px 25px rgba(0,0,0,.55));
   margin-top: 6px;
 } 
-.menu-container .logo{
-  width: 110px;
-  height: 110px;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 25px rgba(0,0,0,.55));
-  margin-top: 6px;
+img.logo{
+  width:110px !important;
+  height:110px !important;
+  object-fit:contain;
+  display:block;
+  margin: 0 auto 6px auto;
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,.6));
 }
