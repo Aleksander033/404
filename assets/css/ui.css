@@ -183,3 +183,5 @@
   background-repeat: no-repeat;
   opacity: 0.9;
 }
+.player-inputs { flex-wrap: wrap; }
+#nickname, #nickname2 { min-width: 220px; }
