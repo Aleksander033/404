@@ -839,6 +839,12 @@
     // Dark background + custom in-game background (ZYNX_BG)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
+    ctx.save();
+    const __bgOpacity = Math.max(0, Math.min(1, parseFloat(localStorage.getItem("ZYNX_BG_OP") || "0.22")));
+    const __bgDarken  = Math.max(0, Math.min(1, parseFloat(localStorage.getItem("ZYNX_BG_DARK") || "0.35")));
+    ctx.globalAlpha = __bgOpacity;
+
+
     // ZYNX_BG supports:
     // - image URL (drawn into canvas)
     // - linear-gradient(...) / radial-gradient(...) (uses first 2 hex colors if present)
@@ -880,6 +886,13 @@
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     }
+    ctx.globalAlpha = 1;
+    if (__bgVal) {
+      ctx.fillStyle = "rgba(0,0,0," + __bgDarken + ")";
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
+    ctx.restore();
+
 
     // Prepare frames
     _0xa630e8.clients.forEach((client, index) => {
@@ -2557,5 +2570,6 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
       window.textCache = _0x337cc2;
     });
   })();
+
 
 
