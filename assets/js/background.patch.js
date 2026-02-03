@@ -2,21 +2,25 @@ console.log("BACKGROUND PATCH LOADED");
 
 (() => {
 
-  function applyBg(val){
-    if(!val){
-      document.body.style.background = "";
-      return;
-    }
+function applyBg(val){
+  const canvas = document.getElementById("game-display");
+  const menu = document.getElementById("menu-display");
 
-    // Nese eshte gradient
-    if(val.startsWith("linear-gradient") || val.startsWith("radial-gradient")){
-      document.body.style.background = val;
-    } 
-    // Nese eshte foto
-    else {
-      document.body.style.background = `url("${val}") center / cover no-repeat`;
-    }
+  if(!canvas) return;
+
+  if(!val){
+    canvas.style.background = "";
+    if(menu) menu.style.backgroundImage = "";
+    return;
   }
+
+  if(val.startsWith("linear-gradient") || val.startsWith("radial-gradient")){
+    canvas.style.background = val;
+  } else {
+    canvas.style.background = `url("${val}") center / cover no-repeat`;
+  }
+}
+
 
   document.addEventListener("DOMContentLoaded", () => {
 
