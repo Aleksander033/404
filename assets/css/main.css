@@ -1,150 +1,147 @@
 /* ======================================== */
 /* Fonts & Icons                            */
 /* ======================================== */
-
-/* Import Font Awesome for icons */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Titillium+Web:wght@200;300;400;600;700;900&family=Ubuntu:wght@300;400;500;700&display=swap');
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Rajdhani:wght@300;400;500;600;700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Ubuntu:wght@300;400;500;700&display=swap');
-
-/* Import additional CSS */
 @import url('./ui.css');
 @import url('./settings.css');
 @import url('./gallery.css');
 
 /* ======================================== */
-/* Global Styles                            */
+/* Theme                                    */
 /* ======================================== */
-html {
-    box-sizing: border-box;
-    font-size: 16px;
+:root{
+  --bg: #070A12;
+  --panel: rgba(15, 18, 30, 0.62);
+  --panel-strong: rgba(15, 18, 30, 0.78);
+  --border: rgba(255,255,255,0.10);
+  --border-2: rgba(255,255,255,0.14);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.70);
+  --accent: #55D6FF;
+  --accent2: #7CFFB2;
+  --shadow: 0 18px 60px rgba(0,0,0,0.50);
 }
 
-*, *:before, *:after {
-    box-sizing: inherit;
-}
+/* ======================================== */
+/* Global Reset                             */
+/* ======================================== */
+html { box-sizing: border-box; font-size: 16px; }
+*, *:before, *:after { box-sizing: inherit; }
+body, h1, h2, h3, h4, h5, h6, p, ol, ul { margin: 0; padding: 0; font-weight: normal; }
+ol, ul { list-style: none; }
+img { max-width: 100%; height: auto; }
 
-body, h1, h2, h3, h4, h5, h6, p, ol, ul {
-    margin: 0;
-    padding: 0;
-    font-weight: normal;
-}
-
-ol, ul {
-    list-style: none;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Pointer events helpers */
 .pointer-events-all { pointer-events: all; }
 .pointer-events-none { pointer-events: none; }
 
-/* Toast spacing */
-.toast {
-    margin-top: 20px !important;
-}
+.toast { margin-top: 20px !important; }
 
 /* ======================================== */
 /* Body & Layout                            */
 /* ======================================== */
 html, body {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 18px;
-    color: #000;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  font-family: 'Ubuntu', sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  background: radial-gradient(1200px 800px at 20% 15%, #0f1f3c 0%, var(--bg) 55%, #05060a 100%);
 }
 
 /* ======================================== */
 /* Game Canvas                              */
 /* ======================================== */
-#game-display {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 0;
-    background-color: #000;
+#game-display{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #000;
 }
 
 /* ======================================== */
 /* HUD Display                              */
 /* ======================================== */
-#hud-display {
-    display: none;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
+#hud-display{
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+#hud-display.visible { display: block; }
+#hud-display.hidden  { display: none; }
+
+/* Leaderboard & Minimap (HUD cards) */
+#leaderboard-canvas, #minimap-canvas{
+  position: absolute;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.35);
 }
 
-#hud-display.visible { display: block; }
-#hud-display.hidden { display: none; }
+#leaderboard-canvas{
+  top: 14px;
+  right: 14px;
+}
+
+#minimap-canvas{
+  bottom: 14px;
+  right: 14px;
+}
 
 /* ======================================== */
 /* Menu Display                             */
 /* ======================================== */
-#menu-display {
-    display: none;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.3);
-    /* Uncomment for background image:
-    background-image: url('../images/bg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    */
+#menu-display{
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0,0,0,0.25);
 }
 
 #menu-display.visible { display: block; }
-#menu-display.hidden { display: none; }
+#menu-display.hidden  { display: none; }
 
-#menu-display-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 2;
-    transform: translate(-50%, -50%);
-    transform-origin: center;
-    transition: transform 0.3s ease-in-out;
+#menu-display-center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
 }
 
-/* ======================================== */
-/* Leaderboard & Minimap                     */
-/* ======================================== */
-#leaderboard-canvas, #minimap-canvas {
-    position: absolute;
-    border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.4);
-    border: 2px solid rgba(0, 0, 0, 0.13);
+/* The main menu card container */
+.menu-container{
+  width: min(520px, calc(100vw - 28px));
+  padding: 22px;
+  border-radius: 22px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  display: grid;
+  gap: 16px;
+  justify-items: center;
 }
 
-#leaderboard-canvas {
-    top: 10px;
-    right: 10px;
+/* Logo */
+.menu-container .logo{
+  width: 220px;
+  height: auto;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.50));
 }
 
-#minimap-canvas {
-    bottom: 10px;
-    right: 10px;
-}
-
-/* ======================================== */
-/* Menu Container                            */
-/* ======================================== */
-.menu-container {
-    display: grid;
-    place-items: center;
-    gap: 20px;
-    border-radius: 40px;
-    padding: 10px;
-}
+/* Small helper for spacing */
+.player-skins{ display: grid; gap: 14px; justify-items: center; width: 100%; }
