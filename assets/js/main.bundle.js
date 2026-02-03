@@ -2016,6 +2016,1238 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
           _0xa630e8.addClient(_0x5e553e);
           console.log("Sending player info...");
           _0x5e553e.sendPlayerInfo({
+            'nickname': ("child" === _0x2390ba ? (this.playerInfo.nickname2 || this.playerInfo.nickname) : this.playerInfo.nickname),
+            'tag': this.playerInfo.tag
+          });
+        });
+        _0x4d98a0.on("close", _0x3d4a54 => {
+          toastr.warning("Connection closed.", "Client (" + _0x2390ba + ')');
+          _0xa630e8.removeClient(_0x3d4a54);
+        });
+        _0x4d98a0.on("playerDied", () => {
+          const _0xa76ba6 = _0xa630e8.getParent();
+          const _0x516d31 = _0xa630e8.getChild();
+          if ("parent" === _0x2390ba && _0x516d31 && _0x516d31.playing) {
+            _0xa630e8.setClient(_0x516d31);
+          }
+          if ("child" === _0x2390ba && _0xa76ba6 && _0xa76ba6.playing) {
+            _0xa630e8.setClient(_0xa76ba6);
+          }
+        });
+        return _0x4d98a0;
+      }
+      ["switchClient"]() {
+        const _0x5bd2b3 = _0xa630e8.getActiveClient();
+        const _0x5b671b = _0xa630e8.getParent();
+        const _0x28d924 = _0xa630e8.getChild();
+        const _0x1f18fc = _0xa630e8.totalPlaying();
+        if (!_0x5b671b) {
+          if (this.connecting) {
+            return;
+          }
+          this.connecting = true;
+          const _0x25d524 = this.initClient("parent", this.serverUrl);
+          _0x25d524.once('clientReady', _0x5ce415 => {
+            this.connecting = false;
+            _0x5ce415.sendSpawn();
+          });
+          return void _0x25d524.on("close", () => this.connecting = false);
+        }
+        if (_0x5bd2b3 && "child" === _0x5bd2b3.clientType && 0x0 === _0x1f18fc) {
+          _0xa630e8.setClient(_0x5b671b);
+          return void _0x5b671b.sendSpawn();
+        }
+        if (_0x5bd2b3 && "parent" === _0x5bd2b3.clientType) {
+          if (_0x5bd2b3.playing) {
+            if (_0x28d924) {
+              if (_0x28d924.playing) {
+                _0xa630e8.setClient(_0x28d924);
+              } else {
+                _0x28d924.sendSpawn();
+                _0x28d924.once("playerAlive", () => {
+                  _0xa630e8.setClient(_0x28d924);
+                });
+              }
+            } else {
+              const _0x2d0f52 = this.initClient('child', this.serverUrl);
+              _0x2d0f52.once("clientReady", () => {
+                _0x2d0f52.sendSpawn();
+                _0x2d0f52.once("playerAlive", () => {
+                  _0xa630e8.setClient(_0x2d0f52);
+                });
+              });
+            }
+          } else {
+            _0x5b671b.sendSpawn();
+          }
+        } else if (_0x5bd2b3 && "child" === _0x5bd2b3.clientType) {
+          if (_0x5b671b.playing) {
+            _0xa630e8.setClient(_0x5b671b);
+          } else {
+            _0x5b671b.sendSpawn();
+            _0x5b671b.once("playerAlive", () => {
+              _0xa630e8.setClient(_0x5b671b);
+            });
+          }
+        }
+      }
+      ['start']() {
+        this.handelResizing();
+        this.handleESCKey();
+        this.initSettingsTabs();
+        this.initSettings();
+        this.handleSettingsMenu();
+        this.initPlayerControls();
+        this.initMouseControls();
+        this.initPlayerInputs();
+      }
+      ["handelResizing"]() {
+        const _0x464c5d = () => {
+          const _0x5dbdc7 = document.getElementById("menu-display-center");
+          const _0x476d6d = document.getElementById("settings-display-center");
+          const _0x5af9b0 = document.getElementById('gallery-display-center');
+          const _0x51ab6e = window.innerWidth;
+          const _0x36f5e7 = window.innerHeight;
+          const _0x3bd89e = _0x51ab6e < 0x4b0 ? _0x51ab6e / 0x4b0 : 0x1;
+          const _0x35c76c = _0x36f5e7 < 0x320 ? _0x36f5e7 / 0x320 : 0x1;
+          const _0x534ce5 = Math.min(_0x3bd89e, _0x35c76c);
+          _0x5dbdc7.style.transform = "translate(-50%, -50%) scale(" + _0x534ce5 + ')';
+          _0x476d6d.style.transform = "translate(-50%, -50%) scale(" + _0x534ce5 + ')';
+          _0x5af9b0.style.transform = "translate(-50%, -50%) scale(" + _0x534ce5 + ')';
+        };
+        window.addEventListener("resize", _0x464c5d);
+        _0x464c5d();
+      }
+      ["handleESCKey"]() {
+        let _0x4753ba = false;
+        document.addEventListener("keydown", _0x54048c => {
+          if ("Escape" === _0x54048c.code && !_0x4753ba) {
+            if ('Escape' === _0x54048c.code && this.settingsVisible) {
+              return void _0x54048c.preventDefault();
+            }
+            _0x4753ba = true;
+            if (document.getElementById("menu-display")) {
+              this.toggleMenuVisibility();
+            }
+          }
+        });
+        document.addEventListener("keyup", _0x5762d6 => {
+          if ("Escape" === _0x5762d6.code) {
+            _0x4753ba = false;
+          }
+        });
+      }
+      ["toggleMenuVisibility"]() {
+        const _0x3ac887 = document.getElementById("menu-display");
+        if (_0x3ac887) {
+          this.menuVisible = !this.menuVisible;
+          this.setElementVisibility(_0x3ac887, this.menuVisible);
+        }
+      }
+      ["setElementVisibility"](_0x1f259d, _0x4b663c) {
+        if (_0x1f259d) {
+          if (_0x4b663c) {
+            _0x1f259d.classList.remove("hidden");
+            _0x1f259d.classList.add("visible");
+          } else {
+            _0x1f259d.classList.remove('visible');
+            _0x1f259d.classList.add('hidden');
+          }
+        }
+      }
+      ["handleSettingsMenu"]() {
+        const _0x1d1c10 = document.getElementById("open-settings");
+        const _0x59d309 = document.getElementById("settings-close-btn");
+        const _0x52be78 = document.getElementById('settings-display');
+        _0x59d309.addEventListener('click', () => {
+          this.setElementVisibility(_0x52be78, false);
+          this.settingsVisible = false;
+        });
+        _0x1d1c10.addEventListener("click", () => {
+          this.setElementVisibility(_0x52be78, true);
+          this.settingsVisible = true;
+        });
+      }
+      ['initPlayerInputs']() {
+        const _0x3a6a1c = document.getElementById("nickname");
+        const _0xnick2 = document.getElementById("nickname2");
+        const _0xdfd103 = document.getElementById("tag");
+        const _0x27ae72 = document.getElementById('play');
+        const _0x4f2956 = document.getElementById("spectate");
+        const _0x12e68b = document.getElementById("menu-display");
+        const _0xeeb4e0 = document.getElementById("servers");
+        const _0x4efb40 = document.getElementById('restart');
+        this.playerInfo.nickname = _0x3a6a1c.value = localStorage.getItem("𝐙𝐲𝐧𝐗:nickname") || '';
+        this.playerInfo.nickname2 = (_0xnick2 ? (_0xnick2.value = (localStorage.getItem("𝐙𝐲𝐧𝐗:nickname2") || '')) : (localStorage.getItem("𝐙𝐲𝐧𝐗:nickname2") || ''));
+        this.playerInfo.tag = _0xdfd103.value = localStorage.getItem("𝐙𝐲𝐧𝐗:tag") || '';
+        const _0x12d85a = localStorage.getItem("𝐙𝐲𝐧𝐗:server") || _0xeeb4e0.options[0x0].value;
+        _0xeeb4e0.value = _0x12d85a;
+        this.serverUrl = _0x12d85a;
+        this.initClient("parent", this.serverUrl);
+        _0x3a6a1c.addEventListener("input", () => {
+          this.playerInfo.nickname = _0x3a6a1c.value;
+          const _0xparent = _0xa630e8.getParent();
+          if (_0xparent) {
+            _0xparent.sendPlayerInfo({
+              'nickname': this.playerInfo.nickname
+            });
+          }
+          localStorage.setItem('𝐙𝐲𝐧𝐗:nickname', _0x3a6a1c.value);
+        });
+        if (_0xnick2) {
+          _0xnick2.addEventListener("input", () => {
+            this.playerInfo.nickname2 = _0xnick2.value;
+            const _0xchild = _0xa630e8.getChild();
+            if (_0xchild) {
+              _0xchild.sendPlayerInfo({
+                'nickname': this.playerInfo.nickname2
+              });
+            }
+            localStorage.setItem('𝐙𝐲𝐧𝐗:nickname2', _0xnick2.value);
+          });
+        }
+        _0xdfd103.addEventListener("input", () => {
+          this.playerInfo.tag = _0xdfd103.value;
+          _0xa630e8.clients.forEach(_0x5a4fcc => {
+            _0x5a4fcc.sendPlayerInfo({
+              'tag': this.playerInfo.tag
+            });
+          });
+          localStorage.setItem("𝐙𝐲𝐧𝐗:tag", _0xdfd103.value);
+        });
+        _0xeeb4e0.addEventListener("change", () => {
+          const _0x485497 = _0xeeb4e0.value;
+          localStorage.setItem("𝐙𝐲𝐧𝐗:server", _0x485497);
+          this.serverUrl = _0x485497;
+          if (_0xa630e8.clients.length) {
+            _0xa630e8.clients.forEach(_0x48a2cd => {
+              _0x48a2cd.close();
+              _0x48a2cd.on("close", () => this.initClient("parent", this.serverUrl));
+            });
+          } else {
+            this.initClient("parent", this.serverUrl);
+          }
+        });
+        _0x4efb40.addEventListener("click", () => {
+          if (_0xa630e8.clients.length) {
+            _0xa630e8.clients.forEach(_0x5c0f0a => {
+              _0x5c0f0a.close();
+              _0x5c0f0a.on('close', () => this.initClient("parent", this.serverUrl));
+            });
+          } else {
+            this.initClient("parent", this.serverUrl);
+          }
+        });
+        _0x27ae72.addEventListener("click", () => {
+          const _0x5e571f = _0xa630e8.getActiveClient();
+          if (_0x5e571f) {
+            _0x5e571f.sendSpawn();
+          }
+          this.setElementVisibility(_0x12e68b, false);
+          this.menuVisible = false;
+        });
+        _0x4f2956.addEventListener("click", () => {
+          const _0x442609 = _0xa630e8.getActiveClient();
+          if (_0x442609) {
+            _0x442609.sendSpectate();
+          }
+          this.setElementVisibility(_0x12e68b, false);
+          this.menuVisible = false;
+        });
+      }
+      ["initPlayerControls"]() {
+        const _0x4115da = document.querySelectorAll('.hotkey-input');
+        let _0x41330b = null;
+        const _0x3a1ef2 = new Set();
+        let _0x51887d = null;
+        _0x4115da.forEach(_0x167948 => {
+          const _0x2a753d = localStorage.getItem(_0x167948.id);
+          if (_0x2a753d) {
+            _0x167948.value = _0x2a753d;
+          } else {
+            localStorage.setItem(_0x167948.id, _0x167948.value);
+          }
+        });
+        _0x4115da.forEach(_0x4cf31b => {
+          _0x4cf31b.addEventListener("focus", () => {
+            if (_0x41330b && _0x41330b !== _0x4cf31b) {
+              _0x41330b.classList.remove("selected");
+              _0x41330b = null;
+            }
+            _0x41330b = _0x4cf31b;
+            _0x4cf31b.classList.add("selected");
+            _0x4cf31b.value = '';
+            _0x4cf31b.addEventListener('keydown', function (_0x3659a4) {
+              _0x3659a4.preventDefault();
+              if ("Escape" === _0x3659a4.code) {
+                _0x3659a4.preventDefault();
+                _0x4cf31b.classList.remove("selected");
+                return void (_0x41330b = null);
+              }
+              if ("Tab" === _0x3659a4.code) {
+                _0x3659a4.preventDefault();
+              }
+              const _0x123d95 = _0x3659a4.code;
+              _0x4cf31b.value = _0x123d95;
+              localStorage.setItem(_0x4cf31b.id, _0x123d95);
+              _0x4cf31b.classList.remove("selected");
+              _0x41330b = null;
+            });
+          });
+        });
+        document.addEventListener("keydown", _0x18521b => {
+          if ('Escape' !== _0x18521b.code) {
+            if (!_0x3a1ef2.has(_0x18521b.code)) {
+              _0x3a1ef2.add(_0x18521b.code);
+              _0x4115da.forEach(_0x422486 => {
+                if (localStorage.getItem(_0x422486.id) === _0x18521b.code) {
+                  this.triggerAction(_0x422486.id, _0x18521b);
+                }
+              });
+              _0x4115da.forEach(_0x2b1abc => {
+                if (!(_0x2b1abc.value !== _0x18521b.code || "macroFeedKey" !== _0x2b1abc.id || _0x51887d)) {
+                  _0x51887d = setInterval(() => {
+                    const _0x48f62a = _0xa630e8.getActiveClient();
+                    if (_0x48f62a) {
+                      _0x48f62a.sendEject();
+                    }
+                  }, 0x28);
+                }
+              });
+            }
+          } else {
+            _0x18521b.preventDefault();
+          }
+        });
+        document.addEventListener("keyup", _0x3ec2c3 => {
+          _0x3a1ef2["delete"](_0x3ec2c3.code);
+          _0x4115da.forEach(_0x1229a9 => {
+            if (_0x1229a9.value === _0x3ec2c3.code && "macroFeedKey" === _0x1229a9.id && _0x51887d) {
+              clearInterval(_0x51887d);
+              _0x51887d = null;
+            }
+          });
+        });
+      }
+      ["triggerAction"](_0x47d3fc, _0x1a0bbe) {
+        if (this.menuVisible) {
+          return;
+        }
+        if (this.settingsVisible) {
+          return;
+        }
+        const _0x425a26 = _0xa630e8.getActiveClient();
+        switch (_0x47d3fc) {
+          case "macroFeedKey":
+            break;
+          case 'splitKey':
+            if (!_0x425a26) {
+              return;
+            }
+            _0x425a26.sendSplit(0x1);
+            break;
+          case "doubleSplitKey":
+            if (!_0x425a26) {
+              return;
+            }
+            _0x425a26.sendSplit(0x2);
+            break;
+          case "tricksplitKey":
+            if (!_0x425a26) {
+              return;
+            }
+            _0x425a26.sendSplit(0x4);
+            break;
+          case "switchPlayerkey":
+            _0x1a0bbe.preventDefault();
+            this.switchClient();
+            break;
+          default:
+            console.log("Action for " + _0x47d3fc + " not defined");
+        }
+      }
+      ['initMouseControls']() {
+        const _0x545ce2 = document.getElementById("leftClick");
+        const _0x44845d = document.getElementById("middleClick");
+        const _0x1aa694 = document.getElementById("rightClick");
+        _0x545ce2.addEventListener("change", () => {
+          this.setMouseAction('leftClick', _0x545ce2.value);
+        });
+        _0x44845d.addEventListener("change", () => {
+          this.setMouseAction("middleClick", _0x44845d.value);
+        });
+        _0x1aa694.addEventListener('change', () => {
+          this.setMouseAction("rightClick", _0x1aa694.value);
+        });
+        this.setupMouseListeners();
+      }
+      ['setMouseAction'](_0x150b26, _0x2efa0d) {
+        localStorage.setItem(_0x150b26 + 'Action', _0x2efa0d);
+      }
+      ['triggerMouseAction'](_0x162f0b) {
+        const _0x4154b3 = localStorage.getItem(_0x162f0b + "Action");
+        const _0x49b22f = _0xa630e8.getActiveClient();
+        if ("macroFeed" === _0x4154b3) {
+          if (_0x49b22f) {
+            if (!this["macroFeedInterval_" + _0x162f0b]) {
+              this['macroFeedInterval_' + _0x162f0b] = setInterval(() => {
+                _0xa630e8.getActiveClient().sendEject();
+              }, 0x28);
+            }
+          }
+        } else if ('split' === _0x4154b3) {
+          if (_0x49b22f) {
+            _0x49b22f.sendSplit(0x1);
+          }
+        } else if ("doubleSplit" === _0x4154b3) {
+          if (_0x49b22f) {
+            _0x49b22f.sendSplit(0x2);
+          }
+        } else if ("tricksplit" === _0x4154b3) {
+          if (_0x49b22f) {
+            _0x49b22f.sendSplit(0x4);
+          }
+        } else if ("switchPlayer" === _0x4154b3) {
+          this.switchClient();
+        }
+      }
+      ['clearMacroFeed'](_0x41f76b) {
+        if (this["macroFeedInterval_" + _0x41f76b]) {
+          clearInterval(this["macroFeedInterval_" + _0x41f76b]);
+          this["macroFeedInterval_" + _0x41f76b] = null;
+        }
+      }
+      ['setupMouseListeners']() {
+        if (!localStorage.getItem("leftClickAction")) {
+          localStorage.setItem("leftClickAction", "tricksplit");
+        }
+        if (!localStorage.getItem("middleClickAction")) {
+          localStorage.setItem('middleClickAction', "noAction");
+        }
+        if (!localStorage.getItem('rightClickAction')) {
+          localStorage.setItem("rightClickAction", "noAction");
+        }
+        document.addEventListener("mousedown", _0x40dd2a => {
+          if (this.menuVisible || this.settingsVisible) {
+            return;
+          }
+          const _0x4032f0 = 0x0 === _0x40dd2a.button ? "leftClick" : 0x1 === _0x40dd2a.button ? "middleClick" : "rightClick";
+          this.triggerMouseAction(_0x4032f0);
+        });
+        document.addEventListener("mouseup", _0x189fd3 => {
+          const _0x3ec4bb = 0x0 === _0x189fd3.button ? "leftClick" : 0x1 === _0x189fd3.button ? "middleClick" : "rightClick";
+          this.clearMacroFeed(_0x3ec4bb);
+        });
+        document.addEventListener("contextmenu", _0x3b4efa => {
+          _0x3b4efa.preventDefault();
+        });
+      }
+      ["initSettingsTabs"]() {
+        const _0x65aad7 = document.querySelectorAll('.tab');
+        const _0x3688bb = document.querySelectorAll('.tab-content');
+        function _0x2b36db(_0x1abf3a) {
+          const _0x453345 = _0x1abf3a.currentTarget;
+          _0x65aad7.forEach(_0x1823eb => _0x1823eb.classList.remove("active"));
+          _0x3688bb.forEach(_0x2cad4f => _0x2cad4f.classList.remove("active"));
+          _0x453345.classList.add('active');
+          const _0x122bbe = _0x453345.getAttribute("data-tab");
+          const _0x1f7fc9 = document.getElementById(_0x122bbe);
+          if (_0x1f7fc9) {
+            _0x1f7fc9.classList.add("active");
+          }
+        }
+        _0x65aad7.forEach(_0x218865 => {
+          _0x218865.addEventListener('click', _0x2b36db);
+        });
+      }
+      ['initSettings']() {
+        this.settings = JSON.parse(localStorage.getItem('𝐙𝐲𝐧𝐗:settings')) || {
+          'animationDelay': 0x8c,
+          'cellTransparency': 0x1,
+          'showNicknames': true,
+          'showMass': true,
+          'showSkins': true,
+          'showGrid': true,
+          'showSectors': false,
+          'showPellets': true,
+          'showDebug': false
+        };
+        this.bindSlider("animationDelay", 'animationDelay', "animationDelayValue");
+        this.bindSlider('cellTransparency', 'cellTransparency', "cellTransparencyValue");
+        this.bindToggleSwitch('showNicknames', "showNicknames");
+        this.bindToggleSwitch("showMass", "showMass");
+        this.bindToggleSwitch('showSkins', "showSkins");
+        this.bindToggleSwitch('showGrid', 'showGrid');
+        this.bindToggleSwitch("showSectors", 'showSectors');
+        this.bindToggleSwitch("showPellets", "showPellets");
+        this.bindToggleSwitch("showDebug", 'showDebug');
+      }
+      ["bindSlider"](_0x58fd39, _0x554ea3, _0x4b168c) {
+        const _0x145425 = document.getElementById(_0x554ea3);
+        const _0x11e2a2 = document.getElementById(_0x4b168c);
+        if (!_0x145425) {
+          return void console.warn("Slider with id \"" + _0x554ea3 + "\" not found.");
+        }
+        if (!_0x11e2a2) {
+          return void console.warn("Display element with id \"" + _0x4b168c + "\" not found.");
+        }
+        const _0x3eaac9 = this.settings[_0x58fd39];
+        _0x145425.value = _0x3eaac9;
+        _0x11e2a2.textContent = _0x3eaac9;
+        _0x145425.addEventListener("input", _0x6d5416 => {
+          const _0x50df51 = parseFloat(_0x6d5416.target.value);
+          _0x11e2a2.textContent = _0x50df51;
+          this.settings[_0x58fd39] = _0x50df51;
+          localStorage.setItem("𝐙𝐲𝐧𝐗:settings", JSON.stringify(this.settings));
+        });
+      }
+      ["bindToggleSwitch"](_0x52d5ee, _0x3afca6) {
+        const _0x30896c = document.getElementById(_0x3afca6);
+        if (_0x30896c) {
+          _0x30896c.checked = this.settings[_0x52d5ee];
+          _0x30896c.addEventListener("change", _0x268ab7 => {
+            this.settings[_0x52d5ee] = _0x268ab7.target.checked;
+            localStorage.setItem("𝐙𝐲𝐧𝐗:settings", JSON.stringify(this.settings));
+          });
+        } else {
+          console.warn("Element with id \"" + _0x3afca6 + "\" not found.");
+        }
+      }
+    }();
+    Array.prototype.remove = function (_0x3d2c0a) {
+      const _0x4581a7 = this.indexOf(_0x3d2c0a);
+      if (-0x1 !== _0x4581a7) {
+        this.splice(_0x4581a7, 0x1);
+      }
+      return -0x1 !== _0x4581a7;
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Document is ready, initializing 𝐙𝐲𝐧𝐗 Engine...");
+      _0x2395ab.start();
+      _0x518936.start();
+      window.app = _0x2395ab;
+      window.skins = _0x525553;
+      window.renderer = _0x518936;
+      window.multibox = _0xa630e8;
+      window.textCache = _0x337cc2;
+    });
+  })();
+        this.drawCompleted = true;
+      }
+    ["drawCell"](_0x3c496a) {
+  const _0x29160e = _0xa630e8.totalPlaying();
+  const _0x59894d = _0xa630e8.getActiveClient();
+  const _0x578b35 = _0xa630e8.findClientOrigin(this.playerID, null);
+
+  if (!this.flags.isPellet) {
+    _0x3c496a.globalAlpha *= _0x2395ab.settings.cellTransparency;
+  }
+
+  // ✅ CHANGE #1 (vetem ky vend): always white for your cells
+ // ===== THEME (localStorage) + multibox fill colors =====
+const _0xtheme = (() => {
+  try { return JSON.parse(localStorage.getItem("ogarx:theme")) || {}; }
+  catch (e) { return {}; }
+})();
+
+const _0xisMine = !!_0x578b35 && !this.flags.isPellet && !this.flags.isEject && !this.flags.isVirus;
+
+// active/inactive vetem nese eshte multibox (ka active client)
+const _0xisActive = (_0xisMine && _0x59894d && _0x578b35 && (_0x578b35.multiboxID === _0x59894d.multiboxID));
+
+// ngjyrat nga theme (fallback ne te bardhe)
+const _0xfillA = _0xtheme.cellFillActiveColor || "#FFFFFF";
+const _0xfillB = _0xtheme.cellFillOtherColor  || "#0033cc";
+
+// vendos fill color
+_0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.color;
+// ======================================================
+
+
+  _0x3c496a.beginPath();
+  _0x3c496a.arc(this.x, this.y, this.size, 0x0, 0x2 * Math.PI, false);
+  _0x3c496a.fill();
+
+  if (this.isMarkedForRemoval) {
+    _0x3c496a.globalAlpha = this.alphaOnRemoval;
+  } else {
+    _0x3c496a.globalAlpha = this.globalAlpha;
+  }
+
+  if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
+    if (_0x578b35 && 'parent' === _0x578b35.clientType) {
+      if (_0x2395ab.playerInfo.customSkin1) {
+        this.skin = _0x2395ab.playerInfo.customSkin1;
+      }
+    } else if (_0x578b35 && "child" === _0x578b35.clientType) {
+      this.skin = _0x2395ab.playerInfo.customSkin2;
+    }
+
+    if (this.skin && _0x2395ab.settings.showSkins) {
+      this.drawSkin(_0x3c496a);
+    }
+
+    // ✅ CHANGE #2: border i hequr komplet (blloku i vjeter u fshi)
+
+    this.drawText(_0x3c496a);
+  }
+}
+
+      ["drawVirus"](_0x5cb68d) {
+        if (!_0x584fcf.complete || 0x0 === _0x584fcf.naturalWidth) {
+          return;
+        }
+        const _0x21653d = this.size * _0x584fcf.width / 0x64;
+        _0x5cb68d.drawImage(_0x584fcf, this.x - _0x21653d / 0x4, this.y - _0x21653d / 0x4, _0x21653d, _0x21653d);
+      }
+      ["drawSkin"](_0x3e8565) {
+        _0x3e8565.globalAlpha *= _0x2395ab.settings.cellTransparency;
+        const _0x37a009 = 0x2 * this.size * 1.002;
+        const _0x3f4ec3 = _0x525553.setOrGetSkin(this.skin);
+        if (_0x3f4ec3) {
+          if (this.skin && this.skin.endsWith(".gif")) {
+            _0x3e8565.save();
+            _0x3e8565.clip();
+            _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
+            _0x3e8565.restore();
+          } else {
+            _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
+          }
+        }
+        if (this.isMarkedForRemoval) {
+          _0x3e8565.globalAlpha = this.alphaOnRemoval;
+        } else {
+          _0x3e8565.globalAlpha = this.globalAlpha;
+        }
+      }
+      ["drawText"](_0xa431b0) {
+        let _0x5103b9 = 0.9;
+        if (_0x2395ab.settings.showNicknames) {
+          const _0x108c9d = _0x337cc2.drawNickname(this, _0x518936.camera.viewScale, _0x5103b9, 0x1);
+          if (_0x108c9d) {
+            const _0x5b1fdb = _0x108c9d.originWidth * this.size * _0x5103b9;
+            const _0x1a9e75 = _0x108c9d.originHeight * this.size * _0x5103b9;
+            _0xa431b0.drawImage(_0x108c9d, this.x - _0x5b1fdb / 0x2, this.y - _0x1a9e75 / 0x2, _0x5b1fdb, _0x1a9e75);
+          }
+        }
+        if (_0x2395ab.settings.showMass) {
+          _0x5103b9 = 0.7;
+          const _0x55fa31 = _0x337cc2.drawMass(this, _0x518936.camera.viewScale, _0x5103b9, 0x1);
+          if (_0x55fa31) {
+            const _0x398a1e = _0x55fa31.originWidth * this.size * _0x5103b9;
+            const _0x474ab8 = _0x55fa31.originHeight * this.size * _0x5103b9;
+            const _0x301d68 = this.size / 0x5 + this.y;
+            _0xa431b0.drawImage(_0x55fa31, this.x - _0x398a1e / 0x2, _0x301d68, _0x398a1e, _0x474ab8);
+          }
+        }
+      }
+    }
+    class _0x2275aa extends _0x21afee {
+      constructor(_0x2a1183) {
+        super();
+        this.clientType = _0x2a1183;
+        this.clientID = null;
+        this.multiboxID = null;
+        this.clientReady = false;
+        this.handshakeCompleted = false;
+        this.serverUrl = null;
+        this.websocket = null;
+        this.border = new _0x54a10e();
+        this.stores = {
+          'clientsByID': {},
+          'playersByID': {},
+          'cellsByID': {},
+          'cellsToRender': [],
+          'cellsToRemove': [],
+          'ownedIDs': [],
+          'ownedCells': [],
+          'leaderboard': [],
+          'minimap': []
+        };
+        this.bound = {
+          'left': 0x0,
+          'top': 0x0,
+          'right': 0x0,
+          'bottom': 0x0
+        };
+        this.spectating = true;
+        this.playing = false;
+        this.spectatePoint = {
+          'x': 0x0,
+          'y': 0x0
+        };
+        this.playerPoint = {
+          'x': 0x0,
+          'y': 0x0
+        };
+      }
+      get ["isConnected"]() {
+        return this.websocket && this.websocket.readyState === WebSocket.OPEN || false;
+      }
+      ["cleanUp"](_0x2af333) {
+        if (_0x2af333) {
+          this.close();
+        }
+        Object.values(this.stores.cellsByID).forEach(_0x333967 => _0x333967.destroy());
+        this.border = new _0x54a10e();
+        this.stores.clientsByID = {};
+        this.stores.playersByID = {};
+        this.stores.leaderboard = [];
+        this.stores.minimap = [];
+        this.clientID = null;
+        this.multiboxID = null;
+        this.clientReady = false;
+        this.handshakeCompleted = false;
+        this.spectating = true;
+        this.playing = false;
+        this.spectatePoint = {
+          'x': 0x0,
+          'y': 0x0
+        };
+        this.playerPoint = {
+          'x': 0x0,
+          'y': 0x0
+        };
+      }
+      ['connect'](_0xd6c5cb) {
+        this.cleanUp(!!this.isConnected);
+        this.serverUrl = _0xd6c5cb;
+        this.websocket = new _0x109239(_0xd6c5cb);
+        this.websocket.onopen = this.onOpen.bind(this);
+        this.websocket.onmessage = this.onMessage.bind(this);
+        this.websocket.onclose = this.onClose.bind(this);
+        this.websocket.onerror = this.onError.bind(this);
+      }
+      ["onOpen"]() {
+        this.log("Connection is open!");
+        this.emit("open");
+      }
+          ["onMessage"](_0x275afd) {
+        // (Inline chat JSON handling removed)
+        // Continue with binary packet handling below
+        const _0xd272f = new _0x20616e(_0x275afd);
+        switch (_0xd272f.readUInt8()) {
+          case 0x0:
+            const _0x3fb407 = _0xd272f.readUInt32();
+            this.border.update(0x0, 0x0, _0x3fb407, _0x3fb407);
+            this.log("World size: " + _0x3fb407 + " x " + _0x3fb407);
+            const _0x396b7d = _0xd272f.readUInt16();
+            this.clientID = _0x396b7d;
+            let _0x2f0e94 = _0xd272f.readUInt8();
+            for (; _0x2f0e94--;) {
+              const _0x143fdc = _0xd272f.readUInt16();
+              this.stores.ownedIDs.push(_0x143fdc);
+              this.log("Added unit: " + _0x143fdc);
+              if (0x1 === this.stores.ownedIDs.length) {
+                this.multiboxID = _0x143fdc;
+                this.log("Active unit set: " + _0x143fdc);
+              }
+            }
+            this.clientReady = true;
+            setTimeout(() => this.emit('clientReady', this), 0x1f4);
+            break;
+          case 0x1:
+            const _0x33169a = _0xd272f.readUInt32();
+            this.border.update(0x0, 0x0, _0x33169a, _0x33169a);
+            this.log("World size: " + _0x33169a + " x " + _0x33169a);
+            break;
+          case 0x5:
+            const _0x4a7451 = _0xd272f.readUInt32() / 0x3e8;
+            Math.floor(_0x4a7451 / 0xe10);
+            Math.floor(_0x4a7451 % 0xe10 / 0x3c);
+            Math.floor(_0x4a7451 % 0x3c);
+            break;
+          case 0x7:
+            _0xd272f.readUInt8();
+            const _0x2293cb = _0xd272f.readUInt8();
+            this.log("Request captcha type (" + _0x2293cb + ')');
+            break;
+          case 0x8:
+            this.sendAuth();
+            break;
+          case 0xa:
+            let _0x4977bc = _0xd272f.readUInt8();
+            for (; _0x4977bc--;) {
+              const _0x1d004a = _0xd272f.readUInt16();
+              const _0x59a604 = Boolean(_0xd272f.readUInt8());
+              const _0x4a2208 = _0xd272f.readString16();
+              const _0xe5cb17 = _0xd272f.readString16();
+              const _0xaae51e = _0xd272f.readUInt8();
+              const _0xa20c0 = _0xd272f.readUInt8();
+              const _0x2eaa86 = _0xd272f.readUInt8();
+              const _0x228560 = new _0xb0820e(_0xaae51e, _0xa20c0, _0x2eaa86);
+              const _0x18e12b = Boolean(_0xd272f.readUInt8());
+              const _0x2da8dd = {
+                'clientID': _0x1d004a,
+                'isBot': _0x59a604,
+                'nickname': _0x4a2208,
+                'team': _0xe5cb17,
+                'color': _0x228560.value,
+                'hasReservedName': _0x18e12b
+              };
+              this.stores.clientsByID[_0x1d004a] = _0x2da8dd;
+            }
+            let _0x4a1a94 = _0xd272f.readUInt8();
+            for (; _0x4a1a94--;) {
+              const _0x50b781 = _0xd272f.readUInt16();
+              const _0x13e179 = _0xd272f.readUInt8();
+              let _0x2adbd9 = null;
+              let _0x1b210a = null;
+              let _0x252673 = null;
+              let _0xe7a4d6 = false;
+              if (0x1 & _0x13e179) {
+                _0x2adbd9 = _0xd272f.readString16();
+              }
+              if (0x2 & _0x13e179) {
+                _0x1b210a = _0xd272f.readString16();
+              }
+              if (0x4 & _0x13e179) {
+                const _0x329646 = _0xd272f.readUInt8();
+                const _0x52c074 = _0xd272f.readUInt8();
+                const _0x3006ce = _0xd272f.readUInt8();
+                _0x252673 = new _0xb0820e(_0x329646, _0x52c074, _0x3006ce);
+                _0xe7a4d6 = Boolean(_0xd272f.readUInt8());
+              }
+              const _0x320897 = this.stores.clientsByID[_0x50b781] || {};
+              if (_0x2adbd9) {
+                _0x320897.nickname = _0x2adbd9;
+              }
+              if (_0x1b210a) {
+                _0x320897.team = _0x1b210a;
+              }
+              if (_0x252673) {
+                _0x320897.color = _0x252673.value;
+              }
+              if (_0xe7a4d6) {
+                _0x320897.hasReservedName = _0xe7a4d6;
+              }
+            }
+            let _0x418104 = _0xd272f.readUInt8();
+            for (; _0x418104--;) {
+              const _0x1491f3 = _0xd272f.readUInt16();
+              delete this.stores.clientsByID[_0x1491f3];
+            }
+            break;
+          case 0xb:
+            let _0x1a5316 = _0xd272f.readUInt8();
+            for (; _0x1a5316--;) {
+              const _0x9e7b3d = _0xd272f.readUInt16();
+              const _0x83ba86 = _0xd272f.readUInt16();
+              const _0x377653 = _0xd272f.readUInt8();
+              const _0x3a3b25 = _0xd272f.readUInt8();
+              const _0x1b7fc2 = _0xd272f.readUInt8();
+              let _0x11deb9 = _0xd272f.readString8() || null;
+              const _0x411b08 = this.stores.clientsByID[_0x83ba86];
+              this.stores.ownedIDs.includes(_0x83ba86);
+              const _0x428bee = {
+                'playerID': _0x9e7b3d,
+                'client': _0x411b08,
+                'color': new _0xb0820e(_0x377653, _0x3a3b25, _0x1b7fc2).value,
+                'skin': _0x11deb9
+              };
+              this.stores.playersByID[_0x9e7b3d] = _0x428bee;
+            }
+            let _0x689009 = _0xd272f.readUInt8();
+            for (; _0x689009--;) {
+              const _0x3b6124 = _0xd272f.readUInt16();
+              const _0x561f4f = _0xd272f.readUInt8();
+              const _0x178eec = this.stores.playersByID[_0x3b6124] || {};
+              if (0x1 & _0x561f4f) {
+                const _0xe06463 = _0xd272f.readUInt8();
+                const _0x1edb30 = _0xd272f.readUInt8();
+                const _0x4fdcf9 = _0xd272f.readUInt8();
+                _0x178eec.color = new _0xb0820e(_0xe06463, _0x1edb30, _0x4fdcf9).value;
+              }
+              if (0x2 & _0x561f4f) {
+                const _0x12ab69 = _0xd272f.readString8() || null;
+                _0x178eec.skin = _0x12ab69;
+              }
+            }
+            let _0x7d0631 = _0xd272f.readUInt8();
+            for (; _0x7d0631--;) {
+              const _0xe2e02a = _0xd272f.readUInt16();
+              this.stores.playersByID[_0xe2e02a];
+              delete this.stores.playersByID[_0xe2e02a];
+            }
+            break;
+          case 0x14:
+            let _0xbaf0 = _0xd272f.readUInt16();
+            for (; _0xbaf0--;) {
+              const _0x1af834 = _0xd272f.readUInt32();
+              const _0x5c6e26 = _0xd272f.readUInt32();
+              const _0x21f6ff = this.stores.cellsByID[_0x1af834];
+              const _0x27e0d8 = this.stores.cellsByID[_0x5c6e26];
+              const _0x485623 = this.stores.ownedIDs.includes(_0x27e0d8.playerID);
+              if (_0x27e0d8) {
+                if (_0x21f6ff) {
+                  _0x27e0d8.setKiller(_0x21f6ff.x, _0x21f6ff.y);
+                }
+                _0x27e0d8.destroy();
+              }
+              if (_0x485623 && 0x0 === this.stores.ownedCells.length) {
+                this.playing = false;
+                this.spectating = true;
+                this.emit('playerDied');
+              }
+            }
+            let _0x59acc9 = _0xd272f.readUInt16();
+            for (; _0x59acc9--;) {
+              const _0x5efa40 = _0xd272f.readUInt32();
+              const _0x1227d9 = _0xd272f.readInt32();
+              const _0x2e40fa = _0xd272f.readInt32();
+              const _0x260a94 = _0xd272f.readUInt16();
+              const _0x4fb784 = _0xd272f.readUInt8();
+              let _0x24388c = null;
+              let _0x375c22 = null;
+              let _0x236c6f = null;
+              let _0x5300f6 = null;
+              let _0x43315f = null;
+              let _0x5d313f = false;
+              let _0x3b5d5f = false;
+              let _0x33c05a = false;
+              if (0x0 === _0x4fb784) {
+                _0x24388c = _0xd272f.readUInt16();
+                const _0x36d788 = this.stores.playersByID[_0x24388c];
+                const _0x4fe8a2 = _0xd272f.readUInt8();
+                const _0x1424b3 = _0xd272f.readUInt8();
+                const _0x278e9e = _0xd272f.readUInt8();
+                const _0x17ac82 = new _0xb0820e(_0x4fe8a2, _0x1424b3, _0x278e9e);
+                _0x375c22 = _0x17ac82.value;
+                _0x236c6f = _0x17ac82.darkerValue;
+                _0x43315f = _0x36d788?.["client"]["nickname"];
+                _0x5300f6 = _0x36d788?.["skin"];
+              }
+              if (0x1 === _0x4fb784) {
+                _0x33c05a = true;
+                _0x375c22 = "#00CD21";
+                _0x236c6f = "#009F1A";
+              }
+              if (0x2 === _0x4fb784) {
+                _0x3b5d5f = true;
+                const _0x10ea0b = _0xd272f.readUInt8();
+                const _0x551ff1 = _0xd272f.readUInt8();
+                const _0x35e0fd = _0xd272f.readUInt8();
+                const _0x228030 = new _0xb0820e(_0x10ea0b, _0x551ff1, _0x35e0fd);
+                _0x375c22 = _0x228030.value;
+                _0x236c6f = _0x228030.darkerValue;
+              }
+              if (0x3 === _0x4fb784) {
+                _0x5d313f = true;
+                _0x375c22 = _0xb0820e.randomColor();
+              }
+              if (0x5 === _0x4fb784) {
+                const _0x59b655 = _0xd272f.readUInt16();
+                const _0x59535b = new Uint8Array(_0x59b655);
+                for (let _0x2ee426 = 0x0; _0x2ee426 < _0x59b655; _0x2ee426++) {
+                  _0x59535b[_0x2ee426] = _0xd272f.readUInt8();
+                }
+                console.log(_0x59535b);
+                this.websocket.senpaModuleAllocArray(_0x59535b);
+              }
+              if (0x13a0 == _0x5efa40) {
+                continue;
+              }
+              const _0x156910 = this.stores.ownedIDs.includes(_0x24388c);
+              const _0x10f482 = new _0x270f21();
+              _0x10f482.initialize(this, _0x24388c, _0x5efa40, _0x1227d9, _0x2e40fa, _0x260a94, _0x375c22, _0x236c6f, _0x5300f6, _0x43315f);
+              _0x10f482.setFlags(_0x5d313f, _0x3b5d5f, _0x33c05a, false);
+              this.stores.cellsByID[_0x5efa40] = _0x10f482;
+              this.stores.cellsToRender.push(_0x10f482);
+              if (_0x156910) {
+                this.stores.ownedCells.push(_0x10f482);
+                this.playing = true;
+                this.spectating = false;
+                this.emit('playerAlive');
+              }
+            }
+            let _0x4bf7b1 = _0xd272f.readUInt16();
+            for (; _0x4bf7b1--;) {
+              const _0x4ad965 = _0xd272f.readUInt32();
+              const _0x3883ab = _0xd272f.readInt32();
+              const _0x578b43 = _0xd272f.readInt32();
+              const _0x1f4fe3 = _0xd272f.readUInt16();
+              const _0x203477 = this.stores.cellsByID[_0x4ad965];
+              if (!_0x203477) {
+                this.log("No cell with ID " + _0x4ad965 + " exist. Request full sync.");
+                return void this.fullSync();
+              }
+              _0x203477.update(_0x3883ab, _0x578b43, _0x1f4fe3);
+            }
+            let _0x20857b = _0xd272f.readUInt16();
+            for (; _0x20857b--;) {
+              const _0x55f71b = _0xd272f.readUInt32();
+              const _0x511b13 = this.stores.cellsByID[_0x55f71b];
+              if (_0x511b13) {
+                _0x511b13.destroy();
+              }
+            }
+            this.websocket.senpaModuleAlloc();
+            if (_0xd272f.offset + 0x1 <= _0xd272f.view.byteLength) {
+              console.log("active tab", _0xd272f.readUInt8());
+            }
+            if (_0xd272f.offset + 0x4 <= _0xd272f.view.byteLength) {
+              const _0x2dc1a7 = _0xd272f.readUInt32();
+              console.log("new border", _0x2dc1a7);
+            }
+            break;
+          case 0x15:
+            this.stores.leaderboard = [];
+            let _0x19b677 = _0xd272f.readInt8();
+            let _0x2990c3 = [];
+            for (; _0x19b677--;) {
+              const _0x53b405 = _0xd272f.readUInt16();
+              const _0x198eff = _0xd272f.readUInt32();
+              const _0x10365d = this.stores.clientsByID[_0x53b405].nickname;
+              _0x2990c3.push({
+                'nickname': _0x10365d,
+                'totalMass': _0x198eff,
+                'clientID': _0x53b405
+              });
+            }
+            _0x2990c3.sort((_0x1d6e48, _0x2cf360) => _0x2cf360.totalMass - _0x1d6e48.totalMass);
+            _0x2990c3.forEach((_0x430d15, _0xd2c185) => {
+              this.stores.leaderboard.push({
+                'position': _0xd2c185 + 0x1,
+                'nickname': _0x430d15.nickname,
+                'totalMass': _0x430d15.totalMass,
+                'isMe': this.stores.ownedIDs.includes(_0x430d15.clientID)
+              });
+            });
+            break;
+          case 0x16:
+            const _0xf1e63f = Date.now();
+            let _0x133074 = _0xd272f.readInt8();
+            for (; _0x133074--;) {
+              const _0x4b2d8e = _0xd272f.readUInt16();
+              const _0x53f19d = _0xd272f.readInt32();
+              const _0x729271 = _0xd272f.readInt32();
+              const _0x33fb7 = _0xd272f.readUInt16();
+              const _0x3c2277 = this.stores.clientsByID[_0x4b2d8e];
+              if (!_0x3c2277?.["isBot"]) {
+                let _0x2af203 = this.stores.minimap.find(_0x400fb7 => _0x400fb7.clientID === _0x4b2d8e);
+                if (_0x2af203) {
+                  _0x2af203.prevX = _0x2af203.x;
+                  _0x2af203.prevY = _0x2af203.y;
+                  _0x2af203.x = _0x53f19d;
+                  _0x2af203.y = _0x729271;
+                  _0x2af203.size = _0x33fb7;
+                  _0x2af203.lastUpdated = _0xf1e63f;
+                } else {
+                  this.stores.minimap.push({
+                    'clientID': _0x4b2d8e,
+                    'x': _0x53f19d,
+                    'y': _0x729271,
+                    'size': _0x33fb7,
+                    'prevX': _0x53f19d,
+                    'prevY': _0x729271,
+                    'nickname': _0x3c2277?.["nickname"],
+                    'color': _0x3c2277?.["color"],
+                    'lastUpdated': _0xf1e63f
+                  });
+                }
+              }
+            }
+            this.stores.minimap = this.stores.minimap.filter(_0x56fe77 => _0xf1e63f - _0x56fe77.lastUpdated < 0x3e8);
+            break;
+          case 0x17:
+            this.spectatePoint.x = _0xd272f.readInt32();
+            this.spectatePoint.y = _0xd272f.readInt32();
+            break;
+          case 0x1e:
+            break;
+          case 0x28:
+            _0xd272f.readUInt16();
+            _0xd272f.readUInt8();
+            _0xd272f.readString16();
+            break;
+          case 0x29:
+            _0xd272f.readUInt8();
+            _0xd272f.readString16();
+            break;
+          case 0x2a:
+            _0xd272f.readUInt8();
+            _0xd272f.readUInt8();
+            _0xd272f.readUInt8();
+            _0xd272f.readUInt8();
+            _0xd272f.readUInt8();
+            _0xd272f.readUInt8();
+            _0xd272f.readUInt16();
+            break;
+          case 0x2b:
+            _0xd272f.readString16();
+            _0xd272f.readUInt8();
+            _0xd272f.readString16();
+        }
+      }
+      // sendChat removed
+      ["onClose"]() {
+        this.cleanUp();
+        this.log("Connection closed.");
+        this.emit('close', this);
+      }
+      ["onError"](_0x2b7e86) {
+        this.log("Connection error.", _0x2b7e86);
+        this.emit("error");
+      }
+      ["sendMessage"](_0x3ffc42) {
+        if (this.isConnected) {
+          this.websocket.send(_0x3ffc42);
+        }
+      }
+      ['sendAuth']() {
+        const _0x1c302c = new _0x537a43();
+        _0x1c302c.writeUInt8(0xd);
+        _0x1c302c.writeUInt16(0x4);
+        _0x1c302c.writeString16('null');
+        this.sendMessage(_0x1c302c.getBuffer());
+        this.handshakeCompleted = true;
+      }
+      ["sendCursorPosition"](_0x39c2dc, _0x18fca1) {
+        if (!this.handshakeCompleted) {
+          return;
+        }
+        const _0x446a4d = new _0x537a43();
+        _0x446a4d.writeUInt8(0x14);
+        _0x446a4d.writeUInt8(this.spectating ? 0x1 : 0x0);
+        if (0x0 == this.spectating) {
+          _0x446a4d.writeUInt8(this.multiboxID);
+        }
+        _0x446a4d.writeInt32(_0x39c2dc);
+        _0x446a4d.writeInt32(_0x18fca1);
+        this.sendMessage(_0x446a4d.getBuffer());
+      }
+      ['sendPlayerInfo']({
+        nickname: _0x2c3c5a,
+        tag: _0x3cd692
+      }) {
+        if (this.handshakeCompleted) {
+          if (undefined !== _0x2c3c5a) {
+            const _0x299fa5 = new _0x537a43();
+            _0x299fa5.writeUInt8(0xa);
+            _0x299fa5.writeString16(_0x2c3c5a);
+            this.sendMessage(_0x299fa5.getBuffer());
+          }
+          if (undefined !== _0x3cd692) {
+            const _0x335fd4 = new _0x537a43();
+            _0x335fd4.writeUInt8(0xb);
+            _0x335fd4.writeString16(_0x3cd692);
+            this.sendMessage(_0x335fd4.getBuffer());
+          }
+        }
+      }
+      ["sendSpawn"]() {
+        if (!this.handshakeCompleted) {
+          return;
+        }
+        const _0x1ab6b9 = new _0x537a43();
+        _0x1ab6b9.writeUInt8(0x0);
+        _0x1ab6b9.writeUInt8(this.multiboxID);
+        this.sendMessage(_0x1ab6b9.getBuffer());
+      }
+      ['sendSpectate']() {
+        if (!this.playing) {
+          this.spectating = true;
+        }
+      }
+      ["sendSplit"](_0xec7637 = 0x1) {
+        if (!this.handshakeCompleted) {
+          return;
+        }
+        const _0xf2df0 = new _0x537a43();
+        _0xf2df0.writeUInt8(0x16);
+        _0xf2df0.writeUInt8(this.multiboxID);
+        _0xf2df0.writeUInt8(_0xec7637);
+        this.sendMessage(_0xf2df0.getBuffer());
+      }
+      ["sendEject"]() {
+        if (!this.handshakeCompleted) {
+          return;
+        }
+        const _0x449f59 = new _0x537a43();
+        _0x449f59.writeUInt8(0x17);
+        _0x449f59.writeUInt8(this.multiboxID);
+        _0x449f59.writeUInt8(Number(false));
+        this.sendMessage(_0x449f59.getBuffer());
+      }
+      ["calculatePlayerPositionAndMass"]() {
+        let _0x187f7f = 0x0;
+        let _0x499cee = 0x0;
+        let _0x57e32b = 0x0;
+        this.stores.ownedCells.forEach(_0xd7a5 => {
+          _0x187f7f += _0xd7a5.mass;
+          _0x499cee += _0xd7a5.x / this.stores.ownedCells.length;
+          _0x57e32b += _0xd7a5.y / this.stores.ownedCells.length;
+        });
+        this.playerPoint.x = _0x499cee;
+        this.playerPoint.y = _0x57e32b;
+      }
+      ["updateBound"]() {
+        this.stores.cellsToRender.forEach(_0x29bad4 => {
+          this.bound.left = _0x29bad4.targetX;
+          this.bound.right = _0x29bad4.targetX;
+          this.bound.top = _0x29bad4.targetY;
+          this.bound.bottom = _0x29bad4.targetY;
+        });
+      }
+      ["updateStaticBound"](_0x301b9e) {
+        if (this.bound.left > _0x301b9e.targetX - 0x0 + _0x301b9e.size) {
+          this.bound.left = _0x301b9e.targetX - 0x0 + _0x301b9e.size;
+        }
+        if (this.bound.right < _0x301b9e.targetX - 0x0 - _0x301b9e.size) {
+          this.bound.right = _0x301b9e.targetX - 0x0 - _0x301b9e.size;
+        }
+        if (this.bound.top > _0x301b9e.targetY - 0x0 + _0x301b9e.size) {
+          this.bound.top = _0x301b9e.targetY - 0x0 + _0x301b9e.size;
+        }
+        if (this.bound.bottom < _0x301b9e.targetY - 0x0 - _0x301b9e.size) {
+          this.bound.bottom = _0x301b9e.targetY - 0x0 - _0x301b9e.size;
+        }
+      }
+      ["isInViewHSLO"](_0x4b454d, _0x4ee1fc, _0x2dfc36) {
+        return !(_0x4b454d + _0x2dfc36 < this.bound.left || _0x4b454d - _0x2dfc36 > this.bound.right || _0x4ee1fc + _0x2dfc36 < this.bound.top || _0x4ee1fc - _0x2dfc36 > this.bound.bottom);
+      }
+      ["fullSync"]() {
+        Object.values(this.stores.cellsByID).forEach(_0x13ddc8 => _0x13ddc8.destroy());
+        const _0x259a97 = new _0x537a43(0x1);
+        _0x259a97.writeUInt8(0x1f);
+        this.sendMessage(_0x259a97.getBuffer());
+      }
+      ["close"]() {
+        if (this.websocket) {
+          this.websocket.close();
+        }
+      }
+      ["log"](_0x2b1d28, ..._0x4a5f82) {
+        console.log("%c[Client]", "color: rgb(39, 176, 158); font-weight: bold;", _0x2b1d28, ..._0x4a5f82);
+      }
+    }
+    const _0x2395ab = new class {
+      constructor() {
+        this.settings = null;
+        this.menuVisible = true;
+        this.settingsVisible = false;
+        this.playerInfo = {
+          'customSkin1': null,
+          'customSkin2': null,
+          'nickname': null,
+          'tag': null
+        };
+        this.connecting = false;
+        this.macroFeedInterval = null;
+        this.serverUrl = 'wss://eu.senpa.io:2001/';
+      }
+      ['initClient'](_0x2390ba, _0x5ba875) {
+        if (_0xa630e8.clients.length > 0x2) {
+          return;
+        }
+        toastr.info("Connecting..", "Client (" + _0x2390ba + ')');
+        const _0x4d98a0 = new _0x2275aa(_0x2390ba);
+        _0x4d98a0.connect(_0x5ba875);
+        _0x4d98a0.once("clientReady", _0x5e553e => {
+          toastr.success('Connected!', "Client (" + _0x2390ba + ')');
+          _0xa630e8.addClient(_0x5e553e);
+          console.log("Sending player info...");
+          _0x5e553e.sendPlayerInfo({
             'nickname': this.playerInfo.nickname,
             'tag': this.playerInfo.tag
           });
