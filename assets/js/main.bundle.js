@@ -957,13 +957,11 @@
         const _0x4977c7 = new Image();
         _0x4977c7.crossOrigin = "anonymous";
         _0x4977c7.onload = () => {
-          this.ctx.clearRect(0x0, 0x0, 0x200, 0x200);
-          this.ctx.drawImage(_0x4977c7, 0x0, 0x0, 0x200, 0x200);
-          const _0x49ad85 = this.canvas.toDataURL();
-          _0x4977c7.onload = null;
-          _0x4977c7.src = _0x49ad85;
-          this.downloads.set(_0x3b31fe, _0x4977c7);
-          this.log("Successfully added skin:", _0x3b31fe);
+// NOTE: Për host-e si Imgur, canvas.toDataURL() mund të dështojë nga CORS.
+// Prandaj ruajmë imazhin direkt dhe e vizatojmë pa e kthyer në DataURL.
+_0x4977c7.onload = null;
+this.downloads.set(_0x3b31fe, _0x4977c7);
+this.log("Successfully added skin:", _0x3b31fe);
         };
         _0x4977c7.onerror = () => {
           this.downloads.set(_0x3b31fe, "error");
@@ -1344,9 +1342,8 @@ if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
 
   // === IMUGR SKINS (DIRECT LINKS) - VETËM PËR TY (parent/child) ===
   // Ndryshoji këto 2 link-e me link-un DIRECT nga Imgur (duhet të mbarojë me .png/.jpg/.gif)
- const __SKIN_PARENT = "https://i.imgur.com/abcd123.png";
-const __SKIN_CHILD  = "https://i.imgur.com/abcd123.png";
-
+  const __SKIN_PARENT = "https://i.imgur.com/REPLACE_PARENT.png";
+  const __SKIN_CHILD  = "https://i.imgur.com/REPLACE_CHILD.png";
 
   // Mos prek skin-et e të tjerëve: vendos skin vetëm kur qeliza është e jotja (parent/child).
   if (_0x578b35 && _0x578b35.clientType === "parent") {
@@ -2528,5 +2525,7 @@ const __SKIN_CHILD  = "https://i.imgur.com/abcd123.png";
       window.textCache = _0x337cc2;
     });
   })();
+
+
 
 
