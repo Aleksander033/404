@@ -1409,22 +1409,17 @@ try {
         _0x3e8565.globalAlpha *= _0x2395ab.settings.cellTransparency;
         const _0x37a009 = 0x2 * this.size * 1.002;
         const _0x3f4ec3 = _0x525553.setOrGetSkin(this.skin);
+        
         if (_0x3f4ec3) {
-  _0x3e8565.save();
+          _0x3e8565.save();
+          // Clip rrethor që skini të mos dalë katror
+          _0x3e8565.beginPath();
+          _0x3e8565.arc(this.x, this.y, _0x37a009 / 0x2, 0x0, Math.PI * 0x2);
+          _0x3e8565.closePath();
+          _0x3e8565.clip();
 
-  // Clip rrethor që skini të mos dalë katror
-  _0x3e8565.beginPath();
-  _0x3e8565.arc(this.x, this.y, _0x37a009 / 2, 0, Math.PI * 2);
-  _0x3e8565.closePath();
-  _0x3e8565.clip();
-
-  _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
-
-  _0x3e8565.restore();
-}
- else {
-            _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
-          }
+          _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
+          _0x3e8565.restore();
         }
         if (this.isMarkedForRemoval) {
           _0x3e8565.globalAlpha = this.alphaOnRemoval;
@@ -2563,6 +2558,9 @@ try {
       window.textCache = _0x337cc2;
     });
   })();
+
+
+
 
 
 
