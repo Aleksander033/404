@@ -213,25 +213,48 @@ body.custom-bg{
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
+/* Skin menu brenda panelit (nuk bllokon butona) */
 #skinMenu{
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  border-radius: 6px;
-  z-index: 9999;
-}
-
-#skinMenu input{
-  width: 220px;
-  padding: 5px;
-}
-
-#skinMenu button{
-  margin-top: 5px;
   width: 100%;
-  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
 }
+
+/* input kompakt */
+#skinMenu #skinInput{
+  flex: 1;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  outline: none;
+}
+
+/* button kompakt */
+#skinMenu #applySkinBtn{
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* mobile: te bjerë poshtë */
+@media (max-width: 520px){
+  #skinMenu{ flex-direction: column; align-items: stretch; }
+  #skinMenu #applySkinBtn{ width: 100%; }
+}
+
 
 
