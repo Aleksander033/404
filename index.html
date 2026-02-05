@@ -118,9 +118,9 @@
     <input id="theme-cell-fill-other" type="color" value="#7cffb2">
   </span>
 </div>  
-				 /* <div class="option">
+				 <!-- <div class="option">
   <span>Background Image URL</span>
-  <input id="bg-url" class="form-control input-nickname" placeholder="Paste image URL or gradient"> */
+  <input id="bg-url" class="form-control input-nickname" placeholder="Paste image URL or gradient"> -->
 
 </div>
 
@@ -269,45 +269,56 @@
 		  <script src="./assets/js/bg-ingame.patch.js"></script>
 		  <script src="./assets/js/bg-pro.patch.js"></script>
 
-<script>
-document.getElementById("applySkinBtn").onclick = function(){
-  const link = document.getElementById("skinInput").value.trim();
 
-  if(!link.startsWith("https://i.imgur.com/")){
-    alert("Duhet Imgur DIRECT link (.png/.jpg)!");
-    return;
+
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+  // APPLY SKIN
+  const btn = document.getElementById("applySkinBtn");
+  const inp = document.getElementById("skinInput");
+
+  if (btn && inp) {
+    btn.addEventListener("click", () => {
+      const link = inp.value.trim();
+
+      if (!/^https:\/\/i\.imgur\.com\/.+\.(png|jpg|jpeg|gif)$/i.test(link)) {
+        alert("Duhet Imgur DIRECT link (.png/.jpg/.gif)");
+        return;
+      }
+
+      localStorage.setItem("customSkinParent", link);
+      localStorage.setItem("customSkinChild", link);
+
+      alert("Skin saved! Refresh page.");
+    });
   }
 
-  localStorage.setItem("customSkinParent", link);
-  localStorage.setItem("customSkinChild", link);
-
-  alert("Skin saved! Refresh page.");
-};
-	<script>
-(function(){
+  // ACTIVE MARKER SETTINGS
   const chk = document.getElementById("showActiveMarker");
   const col = document.getElementById("activeMarkerColor");
 
-  // load
-  const savedOn = localStorage.getItem("showActiveMarker");
-  const savedCol = localStorage.getItem("activeMarkerColor");
+  if (chk) {
+    const savedOn = localStorage.getItem("showActiveMarker");
+    if (savedOn !== null) chk.checked = savedOn === "1";
 
-  if (savedOn !== null) chk.checked = savedOn === "1";
-  if (savedCol) col.value = savedCol;
+    chk.addEventListener("change", () => {
+      localStorage.setItem("showActiveMarker", chk.checked ? "1" : "0");
+    });
+  }
 
-  // save on change
-  chk.addEventListener("change", () => {
-    localStorage.setItem("showActiveMarker", chk.checked ? "1" : "0");
-  });
+  if (col) {
+    const savedCol = localStorage.getItem("activeMarkerColor");
+    if (savedCol) col.value = savedCol;
 
-  col.addEventListener("input", () => {
-    localStorage.setItem("activeMarkerColor", col.value);
-  });
-})();
+    col.addEventListener("input", () => {
+      localStorage.setItem("activeMarkerColor", col.value);
+    });
+  }
+
+});
 </script>
-
-</script>
-
 
 </body>
 </html>
