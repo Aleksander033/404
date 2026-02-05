@@ -1371,25 +1371,28 @@ try {
     (_0x59894d && _0x578b35 && _0x578b35.multiboxID && _0x59894d.multiboxID && _0x578b35.multiboxID === _0x59894d.multiboxID)
   ));
 
+  
   if (__isActive) {
-const __size = Math.max(6, this.size * 0.15);
+    const __size = Math.max(6, this.size * 0.15);
+    const __y = this.y - this.size - (__size * 0.55);
 
-_0x3c496a.save();
-_0x3c496a.globalAlpha = 0.95;
-_0x3c496a.strokeStyle = "#ffffff";
-_0x3c496a.lineWidth = Math.max(2, this.size * 0.03);
+    _0x3c496a.save();
+    _0x3c496a.globalAlpha = 0.95;
 
-_0x3c496a.beginPath();
+    // outline ▼ (si në foton tënde)
+    _0x3c496a.strokeStyle = "#ffffff";
+    _0x3c496a.lineJoin = "round";
+    _0x3c496a.lineCap = "round";
+    _0x3c496a.lineWidth = Math.max(2, this.size * 0.03);
 
-// ▼ trekëndësh i përmbysur (outline)
-_0x3c496a.moveTo(this.x - __size, __y - __size);
-_0x3c496a.lineTo(this.x + __size, __y - __size);
-_0x3c496a.lineTo(this.x, __y + __size);
-_0x3c496a.closePath();
+    _0x3c496a.beginPath();
+    _0x3c496a.moveTo(this.x - __size, __y - __size);
+    _0x3c496a.lineTo(this.x + __size, __y - __size);
+    _0x3c496a.lineTo(this.x, __y + __size);
+    _0x3c496a.closePath();
+    _0x3c496a.stroke();
 
-_0x3c496a.stroke();
-_0x3c496a.restore();
-
+    _0x3c496a.restore();
   }
 } catch(e) {}
   }
@@ -2574,7 +2577,6 @@ _0x3e8565.restore();
       window.textCache = _0x337cc2;
     });
   })();
-
 
 
 
