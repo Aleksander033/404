@@ -254,6 +254,21 @@
 		  <script src="./assets/js/bg-ingame.patch.js"></script>
 		  <script src="./assets/js/bg-pro.patch.js"></script>
 
+<script>
+document.getElementById("applySkinBtn").onclick = function(){
+  const link = document.getElementById("skinInput").value.trim();
+
+  if(!link.startsWith("https://i.imgur.com/")){
+    alert("Duhet Imgur DIRECT link (.png/.jpg)!");
+    return;
+  }
+
+  localStorage.setItem("customSkinParent", link);
+  localStorage.setItem("customSkinChild", link);
+
+  alert("Skin saved! Refresh page.");
+};
+</script>
 
 
 </body>
