@@ -1359,28 +1359,34 @@ if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
   if (this.skin && _0x2395ab.settings.showSkins) {
     this.drawSkin(_0x3c496a);
 
-// === ACTIVE CLIENT MARKER (triangle) ===
+// === ACTIVE CLIENT MARKER (triangle above active cell) ===
 try {
-  const __show = true;
-  if (__show && _0x578b35 && _0xa630e8 && _0xa630e8.getActiveClient) {
-    const __active = _0xa630e8.getActiveClient();
-    if (__active === _0x578b35) {
-      const __size = Math.max(10, _0x37a009 * 0.18);
-      const __y = this.y - (_0x37a009 / 2) - (__size * 0.35);
+  // përdor klientin aktiv (shih switchClient/getActiveClient)
+  const __active = (_0xa630e8 && _0xa630e8.getActiveClient) ? _0xa630e8.getActiveClient() : null;
 
-      _0x3c496a.save();
-      _0x3c496a.globalAlpha = 0.95;
-      _0x3c496a.fillStyle = "#ffffff";
+  // Në disa build-e, krahasimi me objekt mund të ndryshojë; prandaj kontrollojmë edhe clientType.
+  const __isActive = !!(__active && _0x578b35 && (
+    __active === _0x578b35 ||
+    (__active.clientType && _0x578b35.clientType && __active.clientType === _0x578b35.clientType) ||
+    (_0x59894d && _0x578b35 && _0x578b35.multiboxID && _0x59894d.multiboxID && _0x578b35.multiboxID === _0x59894d.multiboxID)
+  ));
 
-      _0x3c496a.beginPath();
-      _0x3c496a.moveTo(this.x, __y - __size * 1.1);
-      _0x3c496a.lineTo(this.x - __size, __y);
-      _0x3c496a.lineTo(this.x + __size, __y);
-      _0x3c496a.closePath();
-      _0x3c496a.fill();
+  if (__isActive) {
+    const __size = Math.max(10, this.size * 0.28);
+    const __y = this.y - this.size - (__size * 0.35);
 
-      _0x3c496a.restore();
-    }
+    _0x3c496a.save();
+    _0x3c496a.globalAlpha = 0.95;
+    _0x3c496a.fillStyle = "#ffffff";
+
+    _0x3c496a.beginPath();
+    _0x3c496a.moveTo(this.x, __y - __size * 1.1);
+    _0x3c496a.lineTo(this.x - __size, __y);
+    _0x3c496a.lineTo(this.x + __size, __y);
+    _0x3c496a.closePath();
+    _0x3c496a.fill();
+
+    _0x3c496a.restore();
   }
 } catch(e) {}
   }
@@ -2565,6 +2571,7 @@ _0x3e8565.restore();
       window.textCache = _0x337cc2;
     });
   })();
+
 
 
 
