@@ -1372,21 +1372,24 @@ try {
   ));
 
   if (__isActive) {
-    const __size = Math.max(6, this.size * 0.18);
-    const __y = this.y - this.size - (__size * 0.35);
+const __size = Math.max(6, this.size * 0.15);
 
-    _0x3c496a.save();
-    _0x3c496a.globalAlpha = 0.95;
-    _0x3c496a.fillStyle = "#ffffff";
+_0x3c496a.save();
+_0x3c496a.globalAlpha = 0.95;
+_0x3c496a.strokeStyle = "#ffffff";
+_0x3c496a.lineWidth = Math.max(2, this.size * 0.03);
 
-    _0x3c496a.beginPath();
-    _0x3c496a.moveTo(this.x, __y - __size * 1.1);
-    _0x3c496a.lineTo(this.x - __size, __y);
-    _0x3c496a.lineTo(this.x + __size, __y);
-    _0x3c496a.closePath();
-    _0x3c496a.fill();
+_0x3c496a.beginPath();
 
-    _0x3c496a.restore();
+// ▼ trekëndësh i përmbysur (outline)
+_0x3c496a.moveTo(this.x - __size, __y - __size);
+_0x3c496a.lineTo(this.x + __size, __y - __size);
+_0x3c496a.lineTo(this.x, __y + __size);
+_0x3c496a.closePath();
+
+_0x3c496a.stroke();
+_0x3c496a.restore();
+
   }
 } catch(e) {}
   }
