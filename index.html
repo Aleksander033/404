@@ -283,6 +283,29 @@ document.getElementById("applySkinBtn").onclick = function(){
 
   alert("Skin saved! Refresh page.");
 };
+	<script>
+(function(){
+  const chk = document.getElementById("showActiveMarker");
+  const col = document.getElementById("activeMarkerColor");
+
+  // load
+  const savedOn = localStorage.getItem("showActiveMarker");
+  const savedCol = localStorage.getItem("activeMarkerColor");
+
+  if (savedOn !== null) chk.checked = savedOn === "1";
+  if (savedCol) col.value = savedCol;
+
+  // save on change
+  chk.addEventListener("change", () => {
+    localStorage.setItem("showActiveMarker", chk.checked ? "1" : "0");
+  });
+
+  col.addEventListener("input", () => {
+    localStorage.setItem("activeMarkerColor", col.value);
+  });
+})();
+</script>
+
 </script>
 
 
