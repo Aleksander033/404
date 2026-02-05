@@ -1372,7 +1372,7 @@ try {
   ));
 
   if (__isActive) {
-    const __size = Math.max(10, this.size * 0.28);
+    const __size = Math.max(6, this.size * 0.18);
     const __y = this.y - this.size - (__size * 0.35);
 
     _0x3c496a.save();
