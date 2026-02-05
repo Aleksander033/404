@@ -1,3 +1,5 @@
+
+
 (() => {
     'use strict';
   
@@ -957,9 +959,8 @@
         const _0x4977c7 = new Image();
         _0x4977c7.crossOrigin = "anonymous";
         _0x4977c7.onload = () => {
-// NOTE: Për host-e si Imgur, canvas.toDataURL() mund të dështojë nga CORS.
-// Prandaj ruajmë imazhin direkt dhe e vizatojmë pa e kthyer në DataURL.
-_0x4977c7.onload = null;
+// Imgur/host-e të tjerë mund të bllokojnë canvas.toDataURL() (CORS) -> skini del i zi.
+// Ruaje imazhin direkt dhe përdore në drawImage pa e kthyer në DataURL.
 this.downloads.set(_0x3b31fe, _0x4977c7);
 this.log("Successfully added skin:", _0x3b31fe);
         };
@@ -1340,21 +1341,21 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
 
 if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
 
-  // === IMUGR SKINS (DIRECT LINKS) - VETËM PËR TY (parent/child) ===
-  // Ndryshoji këto 2 link-e me link-un DIRECT nga Imgur (duhet të mbarojë me .png/.jpg/.gif)
-  const __SKIN_PARENT = "https://i.imgur.com/REPLACE_PARENT.png";
-  const __SKIN_CHILD  = "https://i.imgur.com/REPLACE_CHILD.png";
+  // === CUSTOM SKIN NGA MENU (Imgur link) - vetëm për ty (parent/child) ===
+  // Menuja ruan linkun këtu:
+  const __SKIN_PARENT = (localStorage.getItem("customSkinParent") || "").trim();
+  const __SKIN_CHILD  = (localStorage.getItem("customSkinChild")  || "").trim();
 
   // Mos prek skin-et e të tjerëve: vendos skin vetëm kur qeliza është e jotja (parent/child).
   if (_0x578b35 && _0x578b35.clientType === "parent") {
     this.skin = (_0x2395ab.playerInfo.customSkin1 && _0x2395ab.playerInfo.customSkin1.trim())
       ? _0x2395ab.playerInfo.customSkin1
-      : __SKIN_PARENT;
+      : (__SKIN_PARENT || this.skin);
 
   } else if (_0x578b35 && _0x578b35.clientType === "child") {
     this.skin = (_0x2395ab.playerInfo.customSkin2 && _0x2395ab.playerInfo.customSkin2.trim())
       ? _0x2395ab.playerInfo.customSkin2
-      : __SKIN_CHILD;
+      : (__SKIN_CHILD || this.skin);
   }
 
   if (this.skin && _0x2395ab.settings.showSkins) {
@@ -2525,6 +2526,7 @@ if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
       window.textCache = _0x337cc2;
     });
   })();
+
 
 
 
