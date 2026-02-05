@@ -1366,26 +1366,48 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
         const _0x21653d = this.size * _0x584fcf.width / 0x64;
         _0x5cb68d.drawImage(_0x584fcf, this.x - _0x21653d / 0x4, this.y - _0x21653d / 0x4, _0x21653d, _0x21653d);
       }
-      ["drawSkin"](_0x3e8565) {
-        _0x3e8565.globalAlpha *= _0x2395ab.settings.cellTransparency;
-        const _0x37a009 = 0x2 * this.size * 1.002;
-        const _0x3f4ec3 = _0x525553.setOrGetSkin(this.skin);
-        if (_0x3f4ec3) {
-          if (this.skin && this.skin.endsWith(".gif")) {
-            _0x3e8565.save();
-            _0x3e8565.clip();
-            _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
-            _0x3e8565.restore();
-          } else {
-            _0x3e8565.drawImage(_0x3f4ec3, this.x - _0x37a009 / 0x2, this.y - _0x37a009 / 0x2, _0x37a009, _0x37a009);
-          }
-        }
-        if (this.isMarkedForRemoval) {
-          _0x3e8565.globalAlpha = this.alphaOnRemoval;
-        } else {
-          _0x3e8565.globalAlpha = this.globalAlpha;
-        }
-      }
+    ["drawSkin"](_0x3e8565) {
+  _0x3e8565.globalAlpha *= _0x2395ab.settings.cellTransparency;
+
+  // === IMUGR SKIN (DIRECT LINK) ===
+  const __IMGUR_SKIN = "https://i.imgur.com/abcd123.png"; // <-- ndrysho ID-n me tënden (duhet të mbarojë me .png/.jpg/.gif)
+
+  const _0x37a009 = 0x2 * this.size * 1.002;
+
+  // Detyrohet të përdorë skin nga Imgur
+  const _0x3f4ec3 = _0x525553.setOrGetSkin(__IMGUR_SKIN);
+
+  if (_0x3f4ec3) {
+    // Nëse do të përdorësh GIF nga Imgur, ndrysho linkun sipër në .gif
+    if (__IMGUR_SKIN.endsWith(".gif")) {
+      _0x3e8565.save();
+      _0x3e8565.clip();
+      _0x3e8565.drawImage(
+        _0x3f4ec3,
+        this.x - _0x37a009 / 0x2,
+        this.y - _0x37a009 / 0x2,
+        _0x37a009,
+        _0x37a009
+      );
+      _0x3e8565.restore();
+    } else {
+      _0x3e8565.drawImage(
+        _0x3f4ec3,
+        this.x - _0x37a009 / 0x2,
+        this.y - _0x37a009 / 0x2,
+        _0x37a009,
+        _0x37a009
+      );
+    }
+  }
+
+  if (this.isMarkedForRemoval) {
+    _0x3e8565.globalAlpha = this.alphaOnRemoval;
+  } else {
+    _0x3e8565.globalAlpha = this.globalAlpha;
+  }
+}
+
       ["drawText"](_0xa431b0) {
         let _0x5103b9 = 0.9;
         if (_0x2395ab.settings.showNicknames) {
