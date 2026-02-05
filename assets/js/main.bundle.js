@@ -1369,23 +1369,20 @@ try {
   ));
 
   if (__isActive) {
-    const __size = Math.max(6, this.size * 0.15);
+    const __size = Math.max(5, this.size * 0.14);
     const __y = this.y - this.size - (__size * 0.55);
 
     _0x3c496a.save();
-    _0x3c496a.globalAlpha = 0.95;
+    _0x3c496a.globalAlpha = 0.9;
+    _0x3c496a.fillStyle = "#ffffff";
 
-    _0x3c496a.strokeStyle = "#ffffff";
-    _0x3c496a.lineJoin = "round";
-    _0x3c496a.lineCap = "round";
-    _0x3c496a.lineWidth = Math.max(2, this.size * 0.03);
-
+    // ▼ filled triangle
     _0x3c496a.beginPath();
     _0x3c496a.moveTo(this.x - __size, __y - __size);
     _0x3c496a.lineTo(this.x + __size, __y - __size);
     _0x3c496a.lineTo(this.x, __y + __size);
     _0x3c496a.closePath();
-    _0x3c496a.stroke();
+    _0x3c496a.fill();
 
     _0x3c496a.restore();
   }
@@ -2558,11 +2555,6 @@ try {
       window.textCache = _0x337cc2;
     });
   })();
-
-
-
-
-
 
 
 
