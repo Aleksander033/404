@@ -1,4 +1,3 @@
-
 (() => {
     'use strict';
   
@@ -1341,23 +1340,33 @@ _0x3c496a.fillStyle = _0xisMine ? (_0xisActive ? _0xfillA : _0xfillB) : this.col
     _0x3c496a.globalAlpha = this.globalAlpha;
   }
 
-  if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
-    if (_0x578b35 && 'parent' === _0x578b35.clientType) {
-      if (_0x2395ab.playerInfo.customSkin1) {
-        this.skin = _0x2395ab.playerInfo.customSkin1;
-      }
-    } else if (_0x578b35 && "child" === _0x578b35.clientType) {
-      this.skin = _0x2395ab.playerInfo.customSkin2;
-    }
+if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
 
-    if (this.skin && _0x2395ab.settings.showSkins) {
-      this.drawSkin(_0x3c496a);
-    }
+  // === IMUGR SKINS (DIRECT LINKS) - VETËM PËR TY (parent/child) ===
+  // Ndryshoji këto 2 link-e me link-un DIRECT nga Imgur (duhet të mbarojë me .png/.jpg/.gif)
+  const __SKIN_PARENT = "https://i.imgur.com/REPLACE_PARENT.png";
+  const __SKIN_CHILD  = "https://i.imgur.com/REPLACE_CHILD.png";
 
-    // ✅ CHANGE #2: border i hequr komplet (blloku i vjeter u fshi)
+  // Mos prek skin-et e të tjerëve: vendos skin vetëm kur qeliza është e jotja (parent/child).
+  if (_0x578b35 && _0x578b35.clientType === "parent") {
+    this.skin = (_0x2395ab.playerInfo.customSkin1 && _0x2395ab.playerInfo.customSkin1.trim())
+      ? _0x2395ab.playerInfo.customSkin1
+      : __SKIN_PARENT;
 
-    this.drawText(_0x3c496a);
+  } else if (_0x578b35 && _0x578b35.clientType === "child") {
+    this.skin = (_0x2395ab.playerInfo.customSkin2 && _0x2395ab.playerInfo.customSkin2.trim())
+      ? _0x2395ab.playerInfo.customSkin2
+      : __SKIN_CHILD;
   }
+
+  if (this.skin && _0x2395ab.settings.showSkins) {
+    this.drawSkin(_0x3c496a);
+  }
+
+  // ✅ CHANGE #2: border i hequr komplet (blloku i vjeter u fshi)
+
+  this.drawText(_0x3c496a);
+}
 }
 
       ["drawVirus"](_0x5cb68d) {
