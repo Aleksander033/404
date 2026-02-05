@@ -1344,8 +1344,9 @@ if (!(this.flags.isPellet && this.flags.isEject && this.flags.isVirus)) {
 
   // === IMUGR SKINS (DIRECT LINKS) - VETËM PËR TY (parent/child) ===
   // Ndryshoji këto 2 link-e me link-un DIRECT nga Imgur (duhet të mbarojë me .png/.jpg/.gif)
-  const __SKIN_PARENT = "https://i.imgur.com/REPLACE_PARENT.png";
-  const __SKIN_CHILD  = "https://i.imgur.com/REPLACE_CHILD.png";
+ const __SKIN_PARENT = "https://i.imgur.com/abcd123.png";
+const __SKIN_CHILD  = "https://i.imgur.com/abcd123.png";
+
 
   // Mos prek skin-et e të tjerëve: vendos skin vetëm kur qeliza është e jotja (parent/child).
   if (_0x578b35 && _0x578b35.clientType === "parent") {
