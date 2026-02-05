@@ -1,5 +1,3 @@
-
-
 (() => {
     'use strict';
   
@@ -2567,7 +2565,6 @@ _0x3e8565.restore();
       window.textCache = _0x337cc2;
     });
   })();
-
 
 
 
